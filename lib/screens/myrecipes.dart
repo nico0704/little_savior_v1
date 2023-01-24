@@ -28,18 +28,36 @@ class _MyRecipesState extends State<MyRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Menue().getAppBar(title: "Meine Rezepte"),
-        drawer: Menue().getDrawer(context),
-        body: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
+      appBar: Menue().getAppBar(title: "Meine Rezepte"),
+      drawer: Menue().getDrawer(context),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+              child: ListView.builder(
                 itemCount: _recipes.length,
                 itemBuilder: (context, index) {
+                  if (index == _recipes.length - 1) {
+                    return Column(
+                      children: [
+                        RecipeEntry(title: _recipes[index].title),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Icon(
+                            Icons.add_circle,
+                            color: Color.fromRGBO(11, 110, 79, 1.0),
+                            size: 60,
+                          ),
+                        )
+                      ],
+                    );
+                  }
                   return RecipeEntry(
                     title: _recipes[index].title,
                   );
                 },
               ),
+            ),
     );
   }
 }
@@ -85,6 +103,7 @@ class RecipeEntry extends StatelessWidget {
                       color: Colors.white,
                     ),
                     Icon(
+                      // Stift-Icon ist erstmal nur provisiorisch weil der scheiße aussieht...
                       Icons.draw_rounded,
                       color: Colors.white,
                     ),
