@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_savior_v1/config/palette.dart';
 import 'package:little_savior_v1/models/recipe.api.dart';
 import 'package:little_savior_v1/models/recipe.dart';
 import 'package:little_savior_v1/screens/menue.dart';
@@ -45,7 +46,7 @@ class _MyRecipesState extends State<MyRecipes> {
                           padding: const EdgeInsets.all(20.0),
                           child: Icon(
                             Icons.add_circle,
-                            color: Color.fromRGBO(11, 110, 79, 1.0),
+                            color: Palette.bottleGreen,
                             size: 60,
                           ),
                         )
@@ -72,7 +73,7 @@ class RecipeEntry extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 22, vertical: 10),
       decoration: BoxDecoration(
-        color: Color.fromRGBO(11, 110, 79, 1.0),
+        color: Palette.bottleGreen,
         borderRadius: BorderRadius.all(Radius.circular(40)),
       ),
       child: Container(
