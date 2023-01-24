@@ -8,7 +8,7 @@ class Menue extends StatelessWidget  {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(),
+      appBar: getAppBar(title: 'Little Savior'),
       drawer: getDrawer(context),
     );
   }
@@ -31,10 +31,10 @@ class Menue extends StatelessWidget  {
     );
   }
 
-  AppBar getAppBar() {
+  AppBar getAppBar({required String title}) {
     return AppBar(
       title: Text(
-        "Little Savior",
+        title,
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: Color.fromRGBO(11, 110, 79, 1.0),

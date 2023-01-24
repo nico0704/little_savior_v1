@@ -9,7 +9,7 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: Menue().getAppBar(),
+        appBar: Menue().getAppBar(title: "LittleSavior"),
         body: Center(
           child: Column(
             children: <Widget>[
