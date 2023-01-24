@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_savior_v1/config/palette.dart';
 import 'package:little_savior_v1/screens/dashboard.dart';
 import 'package:little_savior_v1/screens/menue.dart';
 
@@ -22,7 +23,7 @@ class MyPantry extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 shape: CircleBorder(),
                 padding: EdgeInsets.all(20.0),
-                backgroundColor: Color.fromRGBO(11, 110, 79, 1.0),
+                backgroundColor: Palette.bottleGreen,
               ),
               onPressed: () {
                 Navigator.push(context,
@@ -49,7 +50,7 @@ class MyPantry extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        tileColor: Color.fromRGBO(11, 110, 79, 1.0),
+        tileColor: Palette.bottleGreen,
         title: Row(children: [
           Padding(
             padding: const EdgeInsets.all(8.0),

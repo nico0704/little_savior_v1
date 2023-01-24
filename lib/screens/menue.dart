@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_savior_v1/config/palette.dart';
 import 'package:little_savior_v1/screens/dashboard.dart';
 import 'package:little_savior_v1/screens/mypantry.dart';
 import 'package:little_savior_v1/screens/myrecipes.dart';
@@ -17,7 +18,7 @@ class Menue extends StatelessWidget  {
 
   Drawer getDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Color.fromRGBO(230, 243, 236, 1.0),
+      backgroundColor: Palette.lightHoneydew,
       child: ListView(
         children: [
           buildListTile(context, Dashboard(), title: 'Dashboard', ),
@@ -38,7 +39,7 @@ class Menue extends StatelessWidget  {
         title,
         style: TextStyle(color: Colors.white),
       ),
-      backgroundColor: Color.fromRGBO(11, 110, 79, 1.0),
+      backgroundColor: Palette.bottleGreen,
       iconTheme: IconThemeData(color: Colors.white),
     );
   }
@@ -51,7 +52,7 @@ class Menue extends StatelessWidget  {
         child: Text(
           title,
           style: TextStyle(
-            color: Color.fromRGBO(8, 83, 59, 1.0),
+            color: Palette.castletonGreen,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
