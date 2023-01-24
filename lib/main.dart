@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_savior_v1/screens/dashboard.dart';
 import 'package:little_savior_v1/screens/menue.dart';
 
 void main() {
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: const Menue(),
+      home: const Dashboard(),
+
     );
   }
 }
