@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:little_savior_v1/screens/dashboard.dart';
+import 'package:little_savior_v1/screens/mygroceries.dart';
 import 'package:little_savior_v1/screens/mypantry.dart';
 import 'package:little_savior_v1/screens/myrecipes.dart';
 
@@ -21,7 +22,7 @@ class Menue extends StatelessWidget  {
       child: ListView(
         children: [
           buildListTile(context, Dashboard(), title: 'Dashboard', ),
-          buildListTile(context, Menue(), title: 'Lebensmittel', ),
+          buildListTile(context, MyGroceries(), title: 'Lebensmittel', ),
           buildListTile(context, MyPantry(), title: 'Vorratskammer', ),
           buildListTile(context, MyRecipes(), title: 'Meine Rezepte', ),
           buildListTile(context, Menue(), title: 'Rezeptvorschläge', ),
