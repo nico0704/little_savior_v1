@@ -19,7 +19,7 @@ class Menue extends StatelessWidget  {
 
   Drawer getDrawer(BuildContext context) {
     return Drawer(
-      backgroundColor: Palette.lightHoneydew,
+      backgroundColor: Palette.honeydewHalf,
       child: ListView(
         children: [
           buildListTile(context, Dashboard(), title: 'Dashboard', ),
