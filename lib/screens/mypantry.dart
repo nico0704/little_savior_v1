@@ -14,9 +14,10 @@ class MyPantry extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: ListView(children: [
-          buildCategory(20, title: 'Kühlschrank'),
-          buildCategory(20, title: 'Gefrierschrank'),
-          buildCategory(20, title: 'Vorrat'),
+          buildCategory(context, Dashboard(),20, title: 'Kühlschrank'),
+          buildCategory(context, Dashboard(),20, title: 'Gefrierschrank'),
+          buildCategory(context, Dashboard(),20, title: 'Vorrat'),
+          //addButton
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -43,10 +44,14 @@ class MyPantry extends StatelessWidget {
     );
   }
 
-  Padding buildCategory(int entries, {required String title}) {
+  Padding buildCategory(BuildContext context, Widget route, int entries, {required String title}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => route));
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
