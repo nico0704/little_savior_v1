@@ -28,16 +28,8 @@ class _MyRecipesState extends State<MyRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.restaurant_menu),
-              SizedBox(width: 10),
-              Text('My Recipes')
-            ],
-          ),
-        ),
+        appBar: Menue().getAppBar(),
+        drawer: Menue().getDrawer(context),
         body: _isLoading
             ? Center(child: CircularProgressIndicator())
             : ListView.builder(
