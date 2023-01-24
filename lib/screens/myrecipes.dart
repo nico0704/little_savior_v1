@@ -39,7 +39,8 @@ class _MyRecipesState extends State<MyRecipes> {
                     title: _recipes[index].title,
                   );
                 },
-              ));
+              ),
+    );
   }
 }
 
