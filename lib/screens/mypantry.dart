@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:little_savior_v1/config/palette.dart';
 import 'package:little_savior_v1/screens/dashboard.dart';
 import 'package:little_savior_v1/screens/menue.dart';
 
@@ -13,16 +14,17 @@ class MyPantry extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: ListView(children: [
-          buildCategory(20, title: 'Kühlschrank'),
-          buildCategory(20, title: 'Gefrierschrank'),
-          buildCategory(20, title: 'Vorrat'),
+          buildCategory(context, Dashboard(),20, title: 'Kühlschrank'),
+          buildCategory(context, Dashboard(),20, title: 'Gefrierschrank'),
+          buildCategory(context, Dashboard(),20, title: 'Vorrat'),
+          //addButton
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: CircleBorder(),
                 padding: EdgeInsets.all(20.0),
-                backgroundColor: Color.fromRGBO(11, 110, 79, 1.0),
+                backgroundColor: Palette.bottleGreen,
               ),
               onPressed: () {
                 Navigator.push(context,
@@ -42,14 +44,18 @@ class MyPantry extends StatelessWidget {
     );
   }
 
-  Padding buildCategory(int entries, {required String title}) {
+  Padding buildCategory(BuildContext context, Widget route, int entries, {required String title}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => route));
+        },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        tileColor: Color.fromRGBO(11, 110, 79, 1.0),
+        tileColor: Palette.bottleGreen,
         title: Row(children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
