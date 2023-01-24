@@ -9,23 +9,23 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-      appBar: AppBar(title: Text('Simple Flutter Page'),
-    ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-          Text('Läuft diese Woche ab',style:TextStyle(color: Color.fromRGBO(8, 83, 59, 1.0))),
+        appBar: AppBar(title: Text('Simple Flutter Page'),
+        ),
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              Text('Läuft diese Woche ab',style:TextStyle(color: Color.fromRGBO(8, 83, 59, 1.0))),
 
-          SizedBox(height: 25,),
-            Text("Hallo")
+              SizedBox(height: 25,),
+              Text("Hallo")
 
 
-  
-  ],
-  ),
-  ),
-  ),
-  );
+
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
 }
