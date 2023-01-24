@@ -28,7 +28,7 @@ class _MyRecipesState extends State<MyRecipes> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Menue().getAppBar(),
+        appBar: Menue().getAppBar(title: "Meine Rezepte"),
         drawer: Menue().getDrawer(context),
         body: _isLoading
             ? Center(child: CircularProgressIndicator())
