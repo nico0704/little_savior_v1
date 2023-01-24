@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:little_savior_v1/config/palette.dart';
 import 'package:little_savior_v1/models/recipe.api.dart';
 import 'package:little_savior_v1/models/recipe.dart';
+import 'package:little_savior_v1/screens/dashboard.dart';
 import 'package:little_savior_v1/screens/menue.dart';
 
 class MyRecipes extends StatefulWidget {
@@ -44,10 +45,22 @@ class _MyRecipesState extends State<MyRecipes> {
                         RecipeEntry(title: _recipes[index].title),
                         Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Icon(
-                            Icons.add_circle,
-                            color: Palette.bottleGreen,
-                            size: 60,
+                          child: SizedBox(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                              ),
+                              onPressed: () {
+                                // navigate to add recipe screen
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+                              },
+                              child: Icon(
+                                Icons.add_circle,
+                                color: Palette.bottleGreen,
+                                size: 60,
+                              ),
+                            ),
                           ),
                         )
                       ],
@@ -99,14 +112,50 @@ class RecipeEntry extends StatelessWidget {
               child: Container(
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.search,
-                      color: Colors.white,
+                    // Lupe (kann eigentlich weg)
+                    /*Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: CircleBorder(),
+                            backgroundColor: Palette.bottleGreen,
+                            padding: EdgeInsets.symmetric(),
+                          ),
+                          onPressed: () {
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => ReceptDetails()));
+                          },
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
-                    Icon(
-                      // Stift-Icon ist erstmal nur provisiorisch weil der scheiße aussieht...
-                      Icons.draw_rounded,
-                      color: Colors.white,
+                     */
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: SizedBox(
+                        height: 40,
+                        width: 40,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: CircleBorder(),
+                            backgroundColor: Palette.bottleGreen,
+                            padding: EdgeInsets.symmetric(),
+                          ),
+                          onPressed: () {
+                            //Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenRezeptBearbeiten()));
+                          },
+                          child: Icon(
+                            // Stift-Icon ist erstmal nur provisiorisch weil der scheiße aussieht...
+                            Icons.draw_rounded,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
