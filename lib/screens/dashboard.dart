@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:little_savior_v1/screens/menue.dart';
 
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends Menue {
   const Dashboard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: Text('Simple Flutter Page'),
-        ),
+        appBar: getAppBar(),
         body: Center(
           child: Column(
             children: <Widget>[
@@ -24,6 +24,7 @@ class Dashboard extends StatelessWidget {
             ],
           ),
         ),
+        drawer: getDrawer(context),
       ),
     );
   }
