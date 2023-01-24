@@ -38,6 +38,7 @@ class Menue extends StatelessWidget  {
         style: TextStyle(color: Colors.white),
       ),
       backgroundColor: Color.fromRGBO(11, 110, 79, 1.0),
+      iconTheme: IconThemeData(color: Colors.white),
     );
   }
 
