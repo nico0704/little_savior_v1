@@ -5,6 +5,10 @@ class Menue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _buildMenu(context);
+  }
+
+  Scaffold _buildMenu(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -17,20 +21,20 @@ class Menue extends StatelessWidget {
         backgroundColor: Color.fromRGBO(230, 243, 236, 1.0),
         child: ListView(
           children: [
-            _buildListTile(title: 'Dashboard'),
-            _buildListTile(title: 'Lebensmittel'),
-            _buildListTile(title: 'Vorratskammer'),
-            _buildListTile(title: 'Meine Rezepte'),
-            _buildListTile(title: 'Rezeptvorschläge'),
-            _buildListTile(title: 'Ist das noch gut?'),
-            _buildListTile(title: 'Savior Score'),
+            _buildListTile(context, Menue(), title: 'Dashboard', ),
+            _buildListTile(context, Menue(), title: 'Lebensmittel', ),
+            _buildListTile(context, Menue(), title: 'Vorratskammer', ),
+            _buildListTile(context, Menue(), title: 'Meine Rezepte', ),
+            _buildListTile(context, Menue(), title: 'Rezeptvorschläge', ),
+            _buildListTile(context, Menue(), title: 'Ist das noch gut?',),
+            _buildListTile(context, Menue(), title: 'Savior Score'),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildListTile({required String title}) {
+  Widget _buildListTile(BuildContext context, Widget route,{required String title}) {
     return ListTile(
       dense: true,
       title: Padding(
@@ -44,9 +48,10 @@ class Menue extends StatelessWidget {
           ),
         ),
       ),
-      //onTap: () {
-      //  Navigator.pop(context);
-      //},
+      onTap: () {
+       Navigator.push(context,
+       MaterialPageRoute(builder: (context) => route));
+      },
     );
   }
 }
