@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:little_savior_v1/screens/menue.dart';
+import 'package:little_savior_v1/screens/myrecipes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: const Menue(),
+      home: MyRecipes(),
     );
   }
 }
