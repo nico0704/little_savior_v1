@@ -47,13 +47,14 @@ class _MyRecipesState extends State<MyRecipes> {
                           padding: const EdgeInsets.all(20.0),
                           child: SizedBox(
                             child: ElevatedButton(
+
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
                               ),
                               onPressed: () {
                                 // navigate to add recipe screen
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+                                //Navigator.push(context, MaterialPageRoute(builder: (context) => AddRecipe()));
                               },
                               child: Icon(
                                 Icons.add_circle,
@@ -147,6 +148,7 @@ class RecipeEntry extends StatelessWidget {
                             padding: EdgeInsets.symmetric(),
                           ),
                           onPressed: () {
+                            print("Hello");
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => ScreenRezeptBearbeiten()));
                           },
                           child: Icon(
