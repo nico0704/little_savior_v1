@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:little_savior_v1/config/palette.dart';
 import 'menue.dart';
 
@@ -10,6 +11,10 @@ class AddIngredient extends StatefulWidget {
 class _MyAddRecipeState extends State<AddIngredient> {
   List<Widget> inputElements = [];
   String? currentState;
+  String? name;
+  String? mhd;
+  DateTime selectedDate = DateTime.now();
+  final DateFormat formatter = DateFormat('dd.MM.yyyy');
 
   @override
   void initState() {
@@ -17,20 +22,16 @@ class _MyAddRecipeState extends State<AddIngredient> {
     super.initState();
     currentState = "nameOfIngredient";
     //_focus.addListener(_onFocusChange);
-    //myController.addListener(_valueChangeOfName);
+    myController.addListener(_valueChangeOfName);
   }
 
-  //FocusNode _focus = FocusNode();
-  // Controller for inputs
-  //final myController = TextEditingController();
-  //void _valueChangeOfName() {
-  // change of input
-  //}
-  //void _onFocusChange() {
-  //if (_focus.hasFocus == false) {
-  //_expandMHDWidget();
-  //}
-  //}
+  // Controller for input
+  final myController = TextEditingController();
+
+  void _valueChangeOfName() {
+    //print(myController.text);
+    name = myController.text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,30 +75,65 @@ class _MyAddRecipeState extends State<AddIngredient> {
   }
 
   _buildNameInputField() {
-    print("adding ingredient");
-    return TextFormField(
-      //controller: myController,
+    return TextField(
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        hintText: "Lebensmittel",
+      ),
+      controller: myController,
       //focusNode: _focus,
       onEditingComplete: () {
-        //print("Completed it mate");
-        inputElements.add(_buildMHDInputField());
-        setState(() {
-          currentState = "MHD";
-        });
+        if (currentState != "MHD") {
+          inputElements.add(_buildMHDInputField());
+          setState(() {
+            currentState = "MHD";
+          });
+        }
       },
-      decoration: const InputDecoration(
-        border: UnderlineInputBorder(),
-        labelText: 'Lebensmittel',
-      ),
     );
   }
 
   _buildMHDInputField() {
-    showDatePicker(
+    _selectDate(context);
+    return TextField(
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        hintText: "MHD",
+      ),
+      onTap: () {
+        _selectDate(context);
+      },
+    );
+  }
+
+  Future<DateTime> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(new Duration(days: 2000)));
-    return Text("jetzt ausgewähltes mhd kompakt anzeigen...");
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        inputElements[1] = ElevatedButton(
+          onPressed: () {
+            _selectDate(context);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+          ),
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Text(
+              formatter.format(selectedDate),
+            ),
+          ),
+        );
+        //print(selectedDate);
+      });
+      return selectedDate;
+    }
+    return DateTime.now();
   }
 }
