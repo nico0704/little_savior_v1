@@ -47,7 +47,6 @@ class _MyRecipesState extends State<MyRecipes> {
                           padding: const EdgeInsets.all(20.0),
                           child: SizedBox(
                             child: ElevatedButton(
-
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
