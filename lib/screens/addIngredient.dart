@@ -20,17 +20,22 @@ class _MyAddRecipeState extends State<AddIngredient> {
   void initState() {
     inputElements.add(_buildNameInputField());
     super.initState();
-    currentState = "nameOfIngredient";
+    currentState = "build_not_finished";
     //_focus.addListener(_onFocusChange);
-    myController.addListener(_valueChangeOfName);
+    nameController.addListener(_valueChangeOfName);
+    mhdController.addListener(_valueChangeOfMHD);
   }
 
   // Controller for input
-  final myController = TextEditingController();
+  final nameController = TextEditingController();
+  final mhdController = TextEditingController();
 
   void _valueChangeOfName() {
-    //print(myController.text);
-    name = myController.text;
+    name = nameController.text;
+  }
+
+  void _valueChangeOfMHD() {
+    mhd = mhdController.text;
   }
 
   @override
@@ -80,13 +85,15 @@ class _MyAddRecipeState extends State<AddIngredient> {
       decoration: InputDecoration(
         hintText: "Lebensmittel",
       ),
-      controller: myController,
+      controller: nameController,
       //focusNode: _focus,
       onEditingComplete: () {
-        if (currentState != "MHD") {
+        if (currentState != "build_finished") {
           inputElements.add(_buildMHDInputField());
+          inputElements.add(_buildStockInputFields());
+          _selectDate(context);
           setState(() {
-            currentState = "MHD";
+            currentState = "build_finished";
           });
         }
       },
@@ -94,8 +101,8 @@ class _MyAddRecipeState extends State<AddIngredient> {
   }
 
   _buildMHDInputField() {
-    _selectDate(context);
     return TextField(
+      controller: mhdController,
       textAlign: TextAlign.center,
       decoration: InputDecoration(
         hintText: "MHD",
@@ -106,7 +113,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
     );
   }
 
-  Future<DateTime> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -115,25 +122,17 @@ class _MyAddRecipeState extends State<AddIngredient> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        inputElements[1] = ElevatedButton(
-          onPressed: () {
-            _selectDate(context);
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              formatter.format(selectedDate),
-            ),
-          ),
-        );
-        //print(selectedDate);
+        mhdController.text = formatter.format(selectedDate);
       });
-      return selectedDate;
     }
-    return DateTime.now();
   }
+}
+
+_buildStockInputFields() {
+  return TextField(
+    textAlign: TextAlign.center,
+    decoration: InputDecoration(
+      hintText: "Stock",
+    ),
+  );
 }
