@@ -14,19 +14,33 @@ class AddIngredient extends StatefulWidget {
 
 class _MyAddRecipeState extends State<AddIngredient> {
   List<Stock> stocks = [];
-  String? currentStock = "";
-  List<CheckboxNotificationSetting> notifications = [];
+  List<CheckboxNotificationSetting> stockNotifications = [];
+
+  // dummy data... später von DB holen
+  List<CheckboxNotificationSetting> unitNotifications = [
+    CheckboxNotificationSetting(title: "Gramm"),
+    CheckboxNotificationSetting(title: "Kilo"),
+    CheckboxNotificationSetting(title: "Stück"),
+    CheckboxNotificationSetting(title: "Packungen"),
+  ];
+
   List<Widget> inputElements = [];
   String? currentState;
   String? name;
   String? mhd;
+  String? currentStock = ""; // currently selected stock
+  String? currentUnit = ""; // currently selected unit
   DateTime selectedDate = DateTime.now();
   bool _isLoading = true;
   final DateFormat formatter = DateFormat('dd.MM.yyyy');
 
+  // booleans for form logic
+  bool nameInputFinished = false;
+  bool mhdInputFinished = false;
+
   @override
   void initState() {
-    inputElements.add(_buildNameInputRow());
+    inputElements.add(buildNameInputRow());
     super.initState();
     getStocks();
     currentState = "build_not_finished";
@@ -37,7 +51,8 @@ class _MyAddRecipeState extends State<AddIngredient> {
   Future<void> getStocks() async {
     stocks = await StockApi.getStocks();
     for (var i = 0; i < stocks.length; i++) {
-      notifications.add(CheckboxNotificationSetting(title: stocks[i].name));
+      stockNotifications
+          .add(CheckboxNotificationSetting(title: stocks[i].name));
     }
     setState(() {
       _isLoading = false;
@@ -67,7 +82,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
               // camera icon
               Center(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 80, 0, 40),
+                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
                   child: ElevatedButton(
                       onPressed: () {
                         // open camera to scan barcode...
@@ -88,35 +103,44 @@ class _MyAddRecipeState extends State<AddIngredient> {
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                 child: Column(
                   children: [
-                    Card(
-                      margin: EdgeInsets.zero,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                    buildNameInputRow(),
+                    nameInputFinished ? buildMHDInputRow() : Container(),
+                    mhdInputFinished ? buildStockRow() : Container(),
+                    // build rest...
+                    if (mhdInputFinished)
+                      Card(
+                        margin: EdgeInsets.zero,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        color: Palette.honeydew,
+                        child: Column(
+                          children: [
+                            ...stockNotifications
+                                .map(buildSingleStockCheckbox)
+                                .toList(),
+                          ],
+                        ),
                       ),
-                      color: Palette.honeydew,
-                      child: Column(
-                        children: inputElements,
+                    mhdInputFinished ? buildQuantityRow() : Container(),
+                    mhdInputFinished ? buildUnitRow() : Container(),
+                    if (mhdInputFinished)
+                      Card(
+                        margin: EdgeInsets.zero,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        color: Palette.honeydew,
+                        child: Column(
+                          children: [
+                            ...unitNotifications
+                                .map(buildSingleUnitCheckbox)
+                                .toList(),
+                          ],
+                        ),
                       ),
-                    ),
-                    currentState == "build_not_finished"
-                        ? Text("") // Empty on purpose
-                        : Card(
-                            margin: EdgeInsets.zero,
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            color: Palette.honeydew,
-                            child: Column(
-                              children: [
-                                _buildStockRow(),
-                                ...notifications
-                                    .map(buildSingleCheckbox)
-                                    .toList(),
-                              ],
-                            ),
-                          )
                   ],
                 ),
               )
@@ -125,45 +149,40 @@ class _MyAddRecipeState extends State<AddIngredient> {
         ));
   }
 
-  _buildNameInputRow() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-      child: Row(
-        children: [
-          Container(
-            width: 22,
-            height: 22,
-            decoration: new BoxDecoration(
-              color: Palette.bottleGreen,
-              shape: BoxShape.circle,
-            ),
-          ),
-          Flexible(
-            child: TextField(
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: "Lebensmittel",
-                border: InputBorder.none,
+  Widget buildNameInputRow() => (Card(
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        color: Palette.honeydew,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Row(
+            children: [
+              FormCircle(),
+              Flexible(
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: "Lebensmittel",
+                    border: InputBorder.none,
+                  ),
+                  controller: nameController,
+                  onEditingComplete: () {
+                    setState(() {
+                      nameInputFinished = true;
+                      _selectDate(context);
+                    });
+                  },
+                ),
               ),
-              controller: nameController,
-              //focusNode: _focus,
-              onEditingComplete: () {
-                if (currentState != "build_finished") {
-                  inputElements.add(_buildMHDInputRow());
-                  _selectDate(context);
-                  setState(() {
-                    currentState = "build_finished";
-                  });
-                }
-              },
-            ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ));
 
-  Widget buildCheckbox({
+  Widget buildStockCheckbox({
     required CheckboxNotificationSetting notification,
     required VoidCallback onClicked,
   }) =>
@@ -191,82 +210,180 @@ class _MyAddRecipeState extends State<AddIngredient> {
         ),
       );
 
-  Widget buildSingleCheckbox(
+  Widget buildSingleStockCheckbox(
           CheckboxNotificationSetting checkboxNotification) =>
-      buildCheckbox(
+      buildStockCheckbox(
           notification: checkboxNotification,
           onClicked: () {
             setState(() {
-              //final newValue = !checkboxNotification.value;
               currentStock = checkboxNotification.title;
-              notifications.forEach((element) {
+              for (var element in stockNotifications) {
                 element.value = false;
-              });
+              }
               checkboxNotification.value = true;
             });
           });
 
-  _buildStockRow() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-      child: Row(
-        children: [
-          Container(
-            width: 22,
-            height: 22,
-            decoration: new BoxDecoration(
-              color: Palette.bottleGreen,
-              shape: BoxShape.circle,
-            ),
+  Widget buildUnitCheckbox({
+    required CheckboxNotificationSetting notification,
+    required VoidCallback onClicked,
+  }) =>
+      Padding(
+        padding: const EdgeInsets.fromLTRB(140, 0, 0, 0),
+        child: ListTile(
+          onTap: onClicked,
+          leading: Checkbox(
+            shape: CircleBorder(),
+            activeColor: Palette.bottleGreen,
+            checkColor: Colors.transparent,
+            value: notification.value,
+            onChanged: (value) => onClicked(),
           ),
-          Flexible(
-            child: TextField(
-              textAlign: TextAlign.center,
-              readOnly: true,
-              decoration: InputDecoration(
-                hintStyle: TextStyle(
-                  color: Colors.black,
-                ),
-                hintText: currentStock,
-                border: InputBorder.none,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Text(
+              notification.title,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w100,
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      );
 
-  _buildMHDInputRow() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-      child: Row(
-        children: [
-          Container(
-            width: 22,
-            height: 22,
-            decoration: new BoxDecoration(
-              color: Palette.honeydewHalf,
-              shape: BoxShape.circle,
-            ),
-          ),
-          Flexible(
-            child: TextField(
-              controller: mhdController,
-              textAlign: TextAlign.center,
-              decoration: InputDecoration(
-                hintText: "MHD",
-                border: InputBorder.none,
+  Widget buildSingleUnitCheckbox(
+          CheckboxNotificationSetting checkboxNotification) =>
+      buildUnitCheckbox(
+          notification: checkboxNotification,
+          onClicked: () {
+            setState(() {
+              currentUnit = checkboxNotification.title;
+              for (var element in unitNotifications) {
+                element.value = false;
+              }
+              checkboxNotification.value = true;
+            });
+          });
+
+  Widget buildQuantityRow() => (Card(
+        margin: EdgeInsets.only(top: 5),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        color: Palette.honeydew,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Row(
+            children: [
+              FormCircle(),
+              Flexible(
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: "Menge",
+                    border: InputBorder.none,
+                  ),
+                  //controller: nameController,
+                  onEditingComplete: () {},
+                ),
               ),
-              onTap: () {
-                _selectDate(context);
-              },
-            ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ));
+
+  Widget buildUnitRow() => Card(
+        margin: EdgeInsets.only(top: 5),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        color: Palette.honeydew,
+        child: (Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Row(
+            children: [
+              FormCircle(),
+              Flexible(
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      color: currentUnit == "" ? Colors.black26 : Colors.black,
+                    ),
+                    hintText: currentUnit == "" ? "Einheit" : currentUnit,
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )),
+      );
+
+  Widget buildStockRow() => Card(
+        margin: EdgeInsets.only(top: 5),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        color: Palette.honeydew,
+        child: (Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Row(
+            children: [
+              FormCircle(),
+              Flexible(
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      color: currentStock == "" ? Colors.black26 : Colors.black,
+                    ),
+                    hintText:
+                        currentStock == "" ? "Aufbewahrungsort" : currentStock,
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )),
+      );
+
+  Widget buildMHDInputRow() => (Card(
+        margin: EdgeInsets.only(top: 5),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        color: Palette.honeydew,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+          child: Row(
+            children: [
+              FormCircle(),
+              Flexible(
+                child: TextField(
+                  controller: mhdController,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: "MHD",
+                    border: InputBorder.none,
+                  ),
+                  onTap: () {
+                    _selectDate(context);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ));
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -278,7 +395,26 @@ class _MyAddRecipeState extends State<AddIngredient> {
       setState(() {
         selectedDate = picked;
         mhdController.text = formatter.format(selectedDate);
+        mhdInputFinished = true;
       });
     }
+  }
+}
+
+class FormCircle extends StatelessWidget {
+  const FormCircle({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 22,
+      height: 22,
+      decoration: new BoxDecoration(
+        color: Palette.bottleGreen,
+        shape: BoxShape.circle,
+      ),
+    );
   }
 }
