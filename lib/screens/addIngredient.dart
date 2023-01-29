@@ -155,7 +155,8 @@ class _MyAddRecipeState extends State<AddIngredient> {
                     ),
                   ),
                 ),
-              )
+              ),
+              if (mhdInputFinished) buildOptionButtons(),
             ],
           ),
         ));
@@ -198,7 +199,8 @@ class _MyAddRecipeState extends State<AddIngredient> {
   Widget buildStockCheckbox({
     required CheckboxNotificationSetting notification,
     required VoidCallback onClicked,
-  }) => buildCheckbox(onClicked, notification);
+  }) =>
+      buildCheckbox(onClicked, notification);
 
   Widget buildSingleStockCheckbox(
           CheckboxNotificationSetting checkboxNotification) =>
@@ -217,7 +219,8 @@ class _MyAddRecipeState extends State<AddIngredient> {
   Widget buildUnitCheckbox({
     required CheckboxNotificationSetting notification,
     required VoidCallback onClicked,
-  }) => buildCheckbox(onClicked, notification);
+  }) =>
+      buildCheckbox(onClicked, notification);
 
   Widget buildSingleUnitCheckbox(
           CheckboxNotificationSetting checkboxNotification) =>
@@ -251,9 +254,12 @@ class _MyAddRecipeState extends State<AddIngredient> {
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                     hintText: "Menge",
+                    hintStyle: TextStyle(
+                      color: Colors.black26,
+                    ),
                     border: InputBorder.none,
                   ),
-                  //controller: nameController,
+                  keyboardType: TextInputType.number,
                   onEditingComplete: () {},
                 ),
               ),
@@ -403,6 +409,44 @@ class _MyAddRecipeState extends State<AddIngredient> {
         mhdInputFinished = true;
       });
     }
+  }
+
+  Widget buildOptionButtons() => Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: (Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            OptionButton("wegwerfen", Palette.terraCotta),
+            OptionButton("abbrechen", Palette.macaroniAndCheese),
+            OptionButton("speichern", Palette.bottleGreen),
+          ],
+        )),
+  );
+}
+
+class OptionButton extends StatelessWidget {
+  final String title;
+  final Color color;
+  const OptionButton(this.title, this.color, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: ElevatedButton(
+        onPressed: () {},
+        child: Text(title, style: TextStyle(color: Colors.white)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shadowColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            )
+        ),
+      ),
+    );
   }
 }
 
