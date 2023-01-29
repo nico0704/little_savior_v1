@@ -74,7 +74,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Menue().getAppBar(title: "Rezept hinzufügen"),
+        appBar: Menue().getAppBar(title: "Lebensmittel hinzufügen"),
         drawer: Menue().getDrawer(context),
         body: SingleChildScrollView(
           child: Column(
@@ -185,8 +185,10 @@ class _MyAddRecipeState extends State<AddIngredient> {
                   controller: nameController,
                   onEditingComplete: () {
                     setState(() {
-                      nameInputFinished = true;
-                      _selectDate(context);
+                      if (nameInputFinished == false) {
+                        nameInputFinished = true;
+                        _selectDate(context);
+                      }
                     });
                   },
                 ),
@@ -312,6 +314,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
               FormCircle(),
               Flexible(
                 child: TextField(
+                  keyboardType: TextInputType.none,
                   textAlign: TextAlign.center,
                   readOnly: true,
                   decoration: InputDecoration(
@@ -412,8 +415,8 @@ class _MyAddRecipeState extends State<AddIngredient> {
   }
 
   Widget buildOptionButtons() => Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: (Row(
+        padding: const EdgeInsets.all(8.0),
+        child: (Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OptionButton("wegwerfen", Palette.terraCotta),
@@ -421,13 +424,16 @@ class _MyAddRecipeState extends State<AddIngredient> {
             OptionButton("speichern", Palette.bottleGreen),
           ],
         )),
-  );
+      );
 }
 
 class OptionButton extends StatelessWidget {
   final String title;
   final Color color;
-  const OptionButton(this.title, this.color, {
+
+  const OptionButton(
+    this.title,
+    this.color, {
     Key? key,
   }) : super(key: key);
 
@@ -439,12 +445,11 @@ class OptionButton extends StatelessWidget {
         onPressed: () {},
         child: Text(title, style: TextStyle(color: Colors.white)),
         style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          shadowColor: Colors.transparent,
+            backgroundColor: color,
+            shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
-            )
-        ),
+            )),
       ),
     );
   }
