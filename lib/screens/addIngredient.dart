@@ -100,48 +100,60 @@ class _MyAddRecipeState extends State<AddIngredient> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Column(
-                  children: [
-                    buildNameInputRow(),
-                    nameInputFinished ? buildMHDInputRow() : Container(),
-                    mhdInputFinished ? buildStockRow() : Container(),
-                    // build rest...
-                    if (mhdInputFinished)
-                      Card(
-                        margin: EdgeInsets.zero,
-                        clipBehavior: Clip.antiAlias,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        color: Palette.honeydew,
-                        child: Column(
-                          children: [
-                            ...stockNotifications
-                                .map(buildSingleStockCheckbox)
-                                .toList(),
-                          ],
-                        ),
-                      ),
-                    mhdInputFinished ? buildQuantityRow() : Container(),
-                    mhdInputFinished ? buildUnitRow() : Container(),
-                    if (mhdInputFinished)
-                      Card(
-                        margin: EdgeInsets.zero,
-                        clipBehavior: Clip.antiAlias,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        color: Palette.honeydew,
-                        child: Column(
-                          children: [
-                            ...unitNotifications
-                                .map(buildSingleUnitCheckbox)
-                                .toList(),
-                          ],
-                        ),
-                      ),
-                  ],
+                padding: const EdgeInsets.all(20.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Palette.bottleGreen),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  color: Palette.bottleGreen,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Column(
+                      children: [
+                        buildNameInputRow(),
+                        nameInputFinished ? buildMHDInputRow() : Container(),
+                        // build rest...
+                        if (mhdInputFinished) ...[
+                          Card(
+                            margin: EdgeInsets.only(top: 1),
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.black26),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            color: Palette.honeydewHalf,
+                            child: Column(
+                              children: [
+                                buildStockRow(),
+                                ...stockNotifications
+                                    .map(buildSingleStockCheckbox)
+                                    .toList(),
+                              ],
+                            ),
+                          ),
+                          buildQuantityRow(),
+                          Card(
+                            margin: EdgeInsets.only(top: 1),
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.black26),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            color: Palette.honeydewHalf,
+                            child: Column(
+                              children: [
+                                buildUnitRow(),
+                                ...unitNotifications
+                                    .map(buildSingleUnitCheckbox)
+                                    .toList(),
+                              ],
+                            ),
+                          ),
+                        ]
+                      ],
+                    ),
+                  ),
                 ),
               )
             ],
@@ -153,9 +165,10 @@ class _MyAddRecipeState extends State<AddIngredient> {
         margin: EdgeInsets.zero,
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black26),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        color: Palette.honeydew,
+        color: Palette.honeydewHalf,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
           child: Row(
@@ -185,30 +198,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
   Widget buildStockCheckbox({
     required CheckboxNotificationSetting notification,
     required VoidCallback onClicked,
-  }) =>
-      Padding(
-        padding: const EdgeInsets.fromLTRB(140, 0, 0, 0),
-        child: ListTile(
-          onTap: onClicked,
-          leading: Checkbox(
-            shape: CircleBorder(),
-            activeColor: Palette.bottleGreen,
-            checkColor: Colors.transparent,
-            value: notification.value,
-            onChanged: (value) => onClicked(),
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              notification.title,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w100,
-              ),
-            ),
-          ),
-        ),
-      );
+  }) => buildCheckbox(onClicked, notification);
 
   Widget buildSingleStockCheckbox(
           CheckboxNotificationSetting checkboxNotification) =>
@@ -227,30 +217,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
   Widget buildUnitCheckbox({
     required CheckboxNotificationSetting notification,
     required VoidCallback onClicked,
-  }) =>
-      Padding(
-        padding: const EdgeInsets.fromLTRB(140, 0, 0, 0),
-        child: ListTile(
-          onTap: onClicked,
-          leading: Checkbox(
-            shape: CircleBorder(),
-            activeColor: Palette.bottleGreen,
-            checkColor: Colors.transparent,
-            value: notification.value,
-            onChanged: (value) => onClicked(),
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              notification.title,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w100,
-              ),
-            ),
-          ),
-        ),
-      );
+  }) => buildCheckbox(onClicked, notification);
 
   Widget buildSingleUnitCheckbox(
           CheckboxNotificationSetting checkboxNotification) =>
@@ -267,12 +234,13 @@ class _MyAddRecipeState extends State<AddIngredient> {
           });
 
   Widget buildQuantityRow() => (Card(
-        margin: EdgeInsets.only(top: 5),
+        margin: EdgeInsets.only(top: 1),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black26),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        color: Palette.honeydew,
+        color: Palette.honeydewHalf,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
           child: Row(
@@ -295,12 +263,12 @@ class _MyAddRecipeState extends State<AddIngredient> {
       ));
 
   Widget buildUnitRow() => Card(
-        margin: EdgeInsets.only(top: 5),
+        margin: EdgeInsets.only(top: 1),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        color: Palette.honeydew,
+        color: Palette.honeydewHalf,
         child: (Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
           child: Row(
@@ -325,12 +293,12 @@ class _MyAddRecipeState extends State<AddIngredient> {
       );
 
   Widget buildStockRow() => Card(
-        margin: EdgeInsets.only(top: 5),
+        margin: EdgeInsets.only(top: 1),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        color: Palette.honeydew,
+        color: Palette.honeydewHalf,
         child: (Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
           child: Row(
@@ -355,13 +323,49 @@ class _MyAddRecipeState extends State<AddIngredient> {
         )),
       );
 
+  Padding buildCheckbox(
+      VoidCallback onClicked, CheckboxNotificationSetting notification) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 0, 50, 0),
+      child: ListTile(
+        onTap: onClicked,
+        leading: Checkbox(
+          shape: CircleBorder(),
+          activeColor: Palette.bottleGreen,
+          checkColor: Colors.transparent,
+          value: notification.value,
+          onChanged: (value) => onClicked(),
+        ),
+        title: Container(
+          decoration: BoxDecoration(
+            color: Palette.honeydew,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              child: Text(
+                notification.title,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget buildMHDInputRow() => (Card(
-        margin: EdgeInsets.only(top: 5),
+        margin: EdgeInsets.only(top: 2),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black26),
           borderRadius: BorderRadius.circular(8.0),
         ),
-        color: Palette.honeydew,
+        color: Palette.honeydewHalf,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
           child: Row(
@@ -387,8 +391,9 @@ class _MyAddRecipeState extends State<AddIngredient> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
+        helpText: "Wann läuft dein Produkt ab?",
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: selectedDate,
         firstDate: DateTime.now(),
         lastDate: DateTime.now().add(new Duration(days: 2000)));
     if (picked != null && picked != selectedDate) {
