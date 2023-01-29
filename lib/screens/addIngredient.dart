@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +29,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
   String? currentState;
   String? name;
   String? mhd;
+  String? quantity;
   String? currentStock = ""; // currently selected stock
   String? currentUnit = ""; // currently selected unit
   DateTime selectedDate = DateTime.now();
@@ -46,6 +48,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
     currentState = "build_not_finished";
     nameController.addListener(_valueChangeOfName);
     mhdController.addListener(_valueChangeOfMHD);
+    quantityController.addListener(_valueChangeOfQuantity);
   }
 
   Future<void> getStocks() async {
@@ -62,6 +65,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
   // Controller for input
   final nameController = TextEditingController();
   final mhdController = TextEditingController();
+  final quantityController = TextEditingController();
 
   void _valueChangeOfName() {
     name = nameController.text;
@@ -69,6 +73,10 @@ class _MyAddRecipeState extends State<AddIngredient> {
 
   void _valueChangeOfMHD() {
     mhd = mhdController.text;
+  }
+
+  void _valueChangeOfQuantity() {
+    quantity = quantityController.text;
   }
 
   @override
@@ -253,6 +261,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
               FormCircle(),
               Flexible(
                 child: TextField(
+                  controller: quantityController,
                   textAlign: TextAlign.center,
                   decoration: InputDecoration(
                     hintText: "Menge",
@@ -421,7 +430,21 @@ class _MyAddRecipeState extends State<AddIngredient> {
           children: [
             OptionButton("wegwerfen", Palette.terraCotta),
             OptionButton("abbrechen", Palette.macaroniAndCheese),
-            OptionButton("speichern", Palette.bottleGreen),
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  //postData();
+                },
+                child: Text("speichern", style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Palette.bottleGreen,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    )),
+              ),
+            ),
           ],
         )),
       );
@@ -472,3 +495,24 @@ class FormCircle extends StatelessWidget {
     );
   }
 }
+
+// post data to add a new ingredient
+/*
+void postData() async {
+  print("posting data...");
+  final url =
+      "http://medsrv.informatik.hs-fulda.de/lsbackend/api/v1/ingredients/";
+  try {
+    final response = await post(Uri.parse(url), body: {
+      // example data
+      "name": name,
+      "default_ddb": selectedDate.toString(),
+      "barcode": "12345678",
+      "category": "2",
+    });
+    print(response.body);
+  } catch (err) {
+    print(err);
+  }
+}
+*/
