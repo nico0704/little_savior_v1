@@ -23,7 +23,7 @@ class Stock {
         stores: List<int>.from(json["stores"].map((x) => x)),
       );
 
-  static List<Stock> recipesFromSnapshot(List snapshot) {
+  static List<Stock> stockFromSnapshot(List snapshot) {
     return snapshot.map((data) {
       return Stock.fromJson(data);
     }).toList();

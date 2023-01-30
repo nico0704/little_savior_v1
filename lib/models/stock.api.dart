@@ -10,6 +10,6 @@ class StockApi {
     final response = await http.get(uri);
     List<dynamic> dataList = jsonDecode(response.body);
     print(response.body);
-    return Stock.recipesFromSnapshot(dataList);
+    return Stock.stockFromSnapshot(dataList);
   }
 }
