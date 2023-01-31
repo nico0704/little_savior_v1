@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:little_savior_v1/config/palette.dart';
-
 import '../models/checkbox_notification_setting.dart';
 import 'menue.dart';
 
@@ -12,11 +11,14 @@ class MyStockIngredients extends StatefulWidget {
 }
 
 class _MyStockIngredientsState extends State<MyStockIngredients> {
-  final List<Product> _products =
-      List.filled(5, Product(name: "Test", bbd: "31.12.2023"));
-  bool _isLoading = false;
-  List<CheckboxNotificationSetting> productNotifications = [CheckboxNotificationSetting(title: "1"), CheckboxNotificationSetting(title: "2"), CheckboxNotificationSetting(title: "3"), CheckboxNotificationSetting(title: "4")];
+  final bool _isLoading = false;
 
+  // following code is just dummy data for testing...
+  late List<Product> _products;
+  List<CheckboxNotificationSetting> productNotificationsRed = [CheckboxNotificationSetting(title: "Produkt1"), CheckboxNotificationSetting(title: "Produkt2"), CheckboxNotificationSetting(title: "Produkt3"), CheckboxNotificationSetting(title: "Produkt4")];
+  List<CheckboxNotificationSetting> productNotificationsYellow = [CheckboxNotificationSetting(title: "Produkt5"), CheckboxNotificationSetting(title: "Produkt6"), CheckboxNotificationSetting(title: "Produkt7"), CheckboxNotificationSetting(title: "Produkt8")];
+  List<CheckboxNotificationSetting> productNotificationsGreen = [CheckboxNotificationSetting(title: "Produkt9"), CheckboxNotificationSetting(title: "Produkt10"), CheckboxNotificationSetting(title: "Produkt11"), CheckboxNotificationSetting(title: "Produkt12")];
+  // end of test code
   @override
   void initState() {
     super.initState();
@@ -34,17 +36,17 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
                 child: Column(
                   children: [
                     ProductList("Läuft diese Woche ab", Palette.terraCottaHalf),
-                    ...productNotifications
+                    ...productNotificationsRed
                         .map(buildSingleProductCheckbox)
                         .toList(),
                     ProductList("Läuft nächste Woche ab",
                         Palette.macaroniAndCheeseHalf),
-                    ...productNotifications
+                    ...productNotificationsYellow
                         .map(buildSingleProductCheckbox)
                         .toList(),
                     ProductList(
                         "Länger als 2 Wochen haltbar", Palette.honeydew),
-                    ...productNotifications
+                    ...productNotificationsGreen
                         .map(buildSingleProductCheckbox)
                         .toList(),
                   ],
@@ -64,10 +66,11 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
           notification: checkboxNotification,
           onClicked: () {
             setState(() {
-              print(checkboxNotification.title);
+              //print(checkboxNotification.title);
               checkboxNotification.value = !checkboxNotification.value;
             });
-          });
+          },
+      );
 
   Padding buildCheckbox(
       VoidCallback onClicked, CheckboxNotificationSetting notification) {
@@ -76,20 +79,21 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
       child: ListTile(
         onTap: onClicked,
         leading: Checkbox(
-          shape: CircleBorder(),
+          shape: const CircleBorder(),
+          side: MaterialStateBorderSide.resolveWith((states) => const BorderSide(width: 2, color: Palette.bottleGreen)),
           activeColor: Palette.bottleGreen,
           checkColor: Colors.transparent,
           value: notification.value,
           onChanged: (value) => onClicked(),
         ),
         title: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Palette.honeydewHalf,
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: Text(
                 notification.title,
                 style: TextStyle(
@@ -118,7 +122,7 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 20),
       child: Card(
         color: color,
         child: Center(
