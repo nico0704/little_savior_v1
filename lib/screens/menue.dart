@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:little_savior_v1/config/palette.dart';
 import 'package:little_savior_v1/screens/addIngredient.dart';
 import 'package:little_savior_v1/screens/dashboard.dart';
+import 'package:little_savior_v1/screens/myStockIngredients.dart';
 import 'package:little_savior_v1/screens/mygroceries.dart';
 import 'package:little_savior_v1/screens/mypantry.dart';
 import 'package:little_savior_v1/screens/myrecipes.dart';
@@ -30,7 +31,8 @@ class Menue extends StatelessWidget  {
           buildListTile(context, Menue(), title: 'Rezeptvorschläge', ),
           buildListTile(context, Menue(), title: 'Ist das noch gut?',),
           buildListTile(context, Menue(), title: 'Savior Score'),
-          buildListTile(context, AddIngredient(), title: "Lebensmittel adden (Nur zum testen hier drin)")
+          buildListTile(context, AddIngredient(), title: "Lebensmittel adden (Nur zum testen hier drin)"),
+          buildListTile(context, MyStockIngredients(), title: "random stock zum testen"),
         ],
       ),
     );
