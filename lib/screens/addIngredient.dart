@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -77,6 +79,12 @@ class _MyAddRecipeState extends State<AddIngredient> {
 
   void _valueChangeOfQuantity() {
     quantity = quantityController.text;
+  }
+
+  buildDataObject() {
+    var data = {'name' : name, 'bbd' : selectedDate.toString(), 'stock' : currentStock, 'quantity' : quantity, 'unit' : currentUnit};
+    var body = jsonEncode(data);
+    print(body);
   }
 
   @override
@@ -434,7 +442,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
               padding: const EdgeInsets.all(4.0),
               child: ElevatedButton(
                 onPressed: () {
-                  //postData();
+                  buildDataObject();
                 },
                 child: Text("speichern", style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
@@ -495,24 +503,3 @@ class FormCircle extends StatelessWidget {
     );
   }
 }
-
-// post data to add a new ingredient
-/*
-void postData() async {
-  print("posting data...");
-  final url =
-      "http://medsrv.informatik.hs-fulda.de/lsbackend/api/v1/ingredients/";
-  try {
-    final response = await post(Uri.parse(url), body: {
-      // example data
-      "name": name,
-      "default_ddb": selectedDate.toString(),
-      "barcode": "12345678",
-      "category": "2",
-    });
-    print(response.body);
-  } catch (err) {
-    print(err);
-  }
-}
-*/
