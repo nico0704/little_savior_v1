@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:little_savior_v1/config/palette.dart';
-import '../models/checkbox_notification_setting.dart';
+import '../models/product_checkbox_notification_setting.dart';
 import 'menue.dart';
 
 class MyStockIngredients extends StatefulWidget {
@@ -12,12 +13,13 @@ class MyStockIngredients extends StatefulWidget {
 
 class _MyStockIngredientsState extends State<MyStockIngredients> {
   final bool _isLoading = false;
+  final DateFormat formatter = DateFormat('dd.MM');
 
   // following code is just dummy data for testing...
   late List<Product> _products;
-  List<CheckboxNotificationSetting> productNotificationsRed = [CheckboxNotificationSetting(title: "Produkt1"), CheckboxNotificationSetting(title: "Produkt2"), CheckboxNotificationSetting(title: "Produkt3"), CheckboxNotificationSetting(title: "Produkt4")];
-  List<CheckboxNotificationSetting> productNotificationsYellow = [CheckboxNotificationSetting(title: "Produkt5"), CheckboxNotificationSetting(title: "Produkt6"), CheckboxNotificationSetting(title: "Produkt7"), CheckboxNotificationSetting(title: "Produkt8")];
-  List<CheckboxNotificationSetting> productNotificationsGreen = [CheckboxNotificationSetting(title: "Produkt9"), CheckboxNotificationSetting(title: "Produkt10"), CheckboxNotificationSetting(title: "Produkt11"), CheckboxNotificationSetting(title: "Produkt12")];
+  List<ProductCheckboxNotificationSetting> productNotificationsRed = [ProductCheckboxNotificationSetting(title: "Produkt1", bbd: DateTime.now().add(new Duration(days: 3))), ProductCheckboxNotificationSetting(title: "Produkt2", bbd: DateTime.now().add(new Duration(days: 3))), ProductCheckboxNotificationSetting(title: "Produkt3", bbd: DateTime.now().add(new Duration(days: 3))), ProductCheckboxNotificationSetting(title: "Produkt4", bbd: DateTime.now().add(new Duration(days: 3)))];
+  List<ProductCheckboxNotificationSetting> productNotificationsYellow = [ProductCheckboxNotificationSetting(title: "Produkt5", bbd: DateTime.now().add(new Duration(days: 10))), ProductCheckboxNotificationSetting(title: "Produkt6", bbd: DateTime.now().add(new Duration(days: 10))), ProductCheckboxNotificationSetting(title: "Produkt7", bbd: DateTime.now().add(new Duration(days: 10))), ProductCheckboxNotificationSetting(title: "Produkt8", bbd: DateTime.now().add(new Duration(days: 10)))];
+  List<ProductCheckboxNotificationSetting> productNotificationsGreen = [ProductCheckboxNotificationSetting(title: "Produkt9", bbd: DateTime.now().add(new Duration(days: 20))), ProductCheckboxNotificationSetting(title: "Produkt10", bbd: DateTime.now().add(new Duration(days: 20))), ProductCheckboxNotificationSetting(title: "Produkt11", bbd: DateTime.now().add(new Duration(days: 20))), ProductCheckboxNotificationSetting(title: "Produkt12", bbd: DateTime.now().add(new Duration(days: 20)))];
   // end of test code
   @override
   void initState() {
@@ -27,24 +29,24 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Menue().getAppBar(title: "Mein Kühlschrank"),
+        appBar: const Menue().getAppBar(title: "Mein Kühlschrank"),
         // get title from database
-        drawer: Menue().getDrawer(context),
+        drawer: const Menue().getDrawer(context),
         body: _isLoading
             ? Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 child: Column(
                   children: [
-                    ProductList("Läuft diese Woche ab", Palette.terraCottaHalf),
+                    const ProductList("Läuft diese Woche ab", Palette.terraCottaHalf),
                     ...productNotificationsRed
                         .map(buildSingleProductCheckbox)
                         .toList(),
-                    ProductList("Läuft nächste Woche ab",
+                    const ProductList("Läuft nächste Woche ab",
                         Palette.macaroniAndCheeseHalf),
                     ...productNotificationsYellow
                         .map(buildSingleProductCheckbox)
                         .toList(),
-                    ProductList(
+                    const ProductList(
                         "Länger als 2 Wochen haltbar", Palette.honeydew),
                     ...productNotificationsGreen
                         .map(buildSingleProductCheckbox)
@@ -55,33 +57,34 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
   }
 
   Widget buildProductCheckbox({
-    required CheckboxNotificationSetting notification,
+    required ProductCheckboxNotificationSetting notification,
     required VoidCallback onClicked,
   }) =>
       buildCheckbox(onClicked, notification);
 
   Widget buildSingleProductCheckbox(
-          CheckboxNotificationSetting checkboxNotification) =>
+          ProductCheckboxNotificationSetting checkboxNotification) =>
       buildProductCheckbox(
           notification: checkboxNotification,
           onClicked: () {
             setState(() {
-              //print(checkboxNotification.title);
               checkboxNotification.value = !checkboxNotification.value;
             });
           },
       );
 
   Padding buildCheckbox(
-      VoidCallback onClicked, CheckboxNotificationSetting notification) {
+      VoidCallback onClicked, ProductCheckboxNotificationSetting notification) {
+    Color color = calcColor(notification.bbd); // get color according to bbd
+    String displayedText = "${notification.title} - ${formatter.format(notification.bbd)}";
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 0, 50, 0),
       child: ListTile(
         onTap: onClicked,
         leading: Checkbox(
           shape: const CircleBorder(),
-          side: MaterialStateBorderSide.resolveWith((states) => const BorderSide(width: 2, color: Palette.bottleGreen)),
-          activeColor: Palette.bottleGreen,
+          side: MaterialStateBorderSide.resolveWith((states) => BorderSide(width: 2, color: color)),
+          activeColor: color,
           checkColor: Colors.transparent,
           value: notification.value,
           onChanged: (value) => onClicked(),
@@ -95,8 +98,8 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
               child: Text(
-                notification.title,
-                style: TextStyle(
+                displayedText,
+                style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w100,
                 ),
@@ -106,6 +109,21 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
         ),
       ),
     );
+  }
+
+  Color calcColor(DateTime bbd) {
+    // helper method to calculate color according to bbd
+    DateTime now = DateTime.now();
+    if (bbd.difference(now).inDays < 7) {
+      // läuft diese Woche ab
+      return Palette.terraCottaHalf;
+    }
+    if (bbd.difference(now).inDays < 14) {
+      // läuft nächste Woche ab
+      return Palette.macaroniAndCheeseHalf;
+    }
+    // noch mindestens 2 Wochen haltbar
+    return Palette.honeydew;
   }
 }
 
@@ -122,7 +140,7 @@ class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 25),
       child: Card(
         color: color,
         child: Center(
@@ -130,7 +148,7 @@ class ProductList extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Palette.bottleGreen,
                 fontWeight: FontWeight.bold,
               ),
