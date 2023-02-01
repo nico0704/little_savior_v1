@@ -17,55 +17,66 @@ class Dashboard extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Container(
-                  height:200,
-                  width: 200,
+                  height: 130,
+                  width: 130,
                   decoration: BoxDecoration(
-                      color: Palette.terraCotta,
-                      borderRadius: BorderRadius.circular(100),
+                    color: Palette.terraCotta,
+                    borderRadius: BorderRadius.circular(100),
                     //more than 50% of width makes circle
                   ),
+                  child: Center(
+                      child: Text("2",
+                          style: TextStyle(color: Colors.white, fontSize: 44))),
                 ),
               ),
-              Text('Läuft diese Woche ab',
-                  style: TextStyle(color: Color.fromRGBO(8, 83, 59, 1.0))),
+              Text('laufen diese Woche ab',
+                  style: TextStyle(
+                      color: Palette.terraCotta, fontWeight: FontWeight.bold)),
               SizedBox(
                 height: 75,
               ),
-              Text("Versuch's mal hiermit:",style: TextStyle(
-                  fontSize: 22,
-                  color: Palette.castletonGreen,
-                  fontWeight: FontWeight.bold),),
-              Text("Pasta mit Tomaten-Sahne Sauce",style: TextStyle(
+              Text(
+                "Versuch's mal hiermit:",
+                style: TextStyle(
+                    fontSize: 22,
+                    color: Palette.castletonGreen,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "Pasta mit Tomaten-Sahne Sauce",
+                style: TextStyle(
                   fontSize: 18,
                   color: Palette.castletonGreen,
-              ),),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 250),
                 child: SizedBox(
                   width: 300,
                   height: 40,
-                  child: ElevatedButton(style: ElevatedButton.styleFrom(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
                       backgroundColor: Palette.castletonGreen,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
+                      ),
                     ),
-
-                  ),
-                    onPressed:(){
-                    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyRecipes()), //Hier Muss die Seite des Rezeptes noch rein
-                  );
-                  },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MyRecipes()), //Hier Muss die Seite des Rezeptes noch rein
+                      );
+                    },
                     child: Text("Rezept ansehen"),
-
                   ),
                 ),
               )
             ],
           ),
-          
         ),
         drawer: Menue().getDrawer(context),
       ),
