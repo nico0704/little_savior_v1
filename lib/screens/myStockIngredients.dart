@@ -118,7 +118,7 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
 
   showSnackBar(context, product, index, productNotificationsList) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds: 4),
       content: Text("${product.title} deleted"),
       action: SnackBarAction(
         label: "Rückgängig",
