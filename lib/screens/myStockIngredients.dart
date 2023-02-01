@@ -17,10 +17,37 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
 
   // following code is just dummy data for testing...
   late List<Product> _products;
-  List<ProductCheckboxNotificationSetting> productNotificationsRed = [ProductCheckboxNotificationSetting(title: "Produkt1", bbd: DateTime.now().add(new Duration(days: 3))), ProductCheckboxNotificationSetting(title: "Produkt2", bbd: DateTime.now().add(new Duration(days: 3))), ProductCheckboxNotificationSetting(title: "Produkt3", bbd: DateTime.now().add(new Duration(days: 3))), ProductCheckboxNotificationSetting(title: "Produkt4", bbd: DateTime.now().add(new Duration(days: 3)))];
-  List<ProductCheckboxNotificationSetting> productNotificationsYellow = [ProductCheckboxNotificationSetting(title: "Produkt5", bbd: DateTime.now().add(new Duration(days: 10))), ProductCheckboxNotificationSetting(title: "Produkt6", bbd: DateTime.now().add(new Duration(days: 10))), ProductCheckboxNotificationSetting(title: "Produkt7", bbd: DateTime.now().add(new Duration(days: 10))), ProductCheckboxNotificationSetting(title: "Produkt8", bbd: DateTime.now().add(new Duration(days: 10)))];
-  List<ProductCheckboxNotificationSetting> productNotificationsGreen = [ProductCheckboxNotificationSetting(title: "Produkt9", bbd: DateTime.now().add(new Duration(days: 20))), ProductCheckboxNotificationSetting(title: "Produkt10", bbd: DateTime.now().add(new Duration(days: 20))), ProductCheckboxNotificationSetting(title: "Produkt11", bbd: DateTime.now().add(new Duration(days: 20))), ProductCheckboxNotificationSetting(title: "Produkt12", bbd: DateTime.now().add(new Duration(days: 20)))];
-  // end of test code
+  List<ProductCheckboxNotificationSetting> productNotificationsRed = [
+    ProductCheckboxNotificationSetting(
+        title: "Produkt1", bbd: DateTime.now().add(new Duration(days: 3))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt2", bbd: DateTime.now().add(new Duration(days: 3))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt3", bbd: DateTime.now().add(new Duration(days: 3))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt4", bbd: DateTime.now().add(new Duration(days: 3)))
+  ];
+  List<ProductCheckboxNotificationSetting> productNotificationsYellow = [
+    ProductCheckboxNotificationSetting(
+        title: "Produkt5", bbd: DateTime.now().add(new Duration(days: 10))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt6", bbd: DateTime.now().add(new Duration(days: 10))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt7", bbd: DateTime.now().add(new Duration(days: 10))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt8", bbd: DateTime.now().add(new Duration(days: 10)))
+  ];
+  List<ProductCheckboxNotificationSetting> productNotificationsGreen = [
+    ProductCheckboxNotificationSetting(
+        title: "Produkt9", bbd: DateTime.now().add(new Duration(days: 20))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt10", bbd: DateTime.now().add(new Duration(days: 20))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt11", bbd: DateTime.now().add(new Duration(days: 20))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt12", bbd: DateTime.now().add(new Duration(days: 20)))
+  ];
+  // end of test data
   @override
   void initState() {
     super.initState();
@@ -37,53 +64,127 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
             : SingleChildScrollView(
                 child: Column(
                   children: [
-                    const ProductList("Läuft diese Woche ab", Palette.terraCottaHalf),
-                    ...productNotificationsRed
-                        .map(buildSingleProductCheckbox)
-                        .toList(),
-                    const ProductList("Läuft nächste Woche ab",
-                        Palette.macaroniAndCheeseHalf),
-                    ...productNotificationsYellow
-                        .map(buildSingleProductCheckbox)
-                        .toList(),
                     const ProductList(
-                        "Länger als 2 Wochen haltbar", Palette.honeydew),
-                    ...productNotificationsGreen
-                        .map(buildSingleProductCheckbox)
-                        .toList(),
+                        "Läuft diese Woche ab", Palette.terraCottaHalf), showList(productNotificationsRed),
+                    const ProductList("Läuft nächste Woche ab", Palette.macaroniAndCheeseHalf),
+                    showList(productNotificationsYellow),
+                    const ProductList("Länger als 2 Wochen haltbar", Palette.honeydew),
+                    showList(productNotificationsGreen),
                   ],
                 ),
               ));
   }
 
+  showList(productNotificationsList) {
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: EdgeInsets.all(10),
+        itemCount: productNotificationsList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return rowItem(context, index, productNotificationsList);
+        });
+  }
+
+  rowItem(BuildContext context, int index, productNotificationsList) {
+    // code for rowItem to delete via slide...
+    return Dismissible(
+        key: Key(productNotificationsList[index].title),
+        movementDuration: Duration(seconds: 1),
+        background: deleteBgItem(calcColor(productNotificationsList[index].bbd)),
+        onDismissed: (direction) {
+          var product = productNotificationsList[index];
+          showSnackBar(context, product, index, productNotificationsList);
+          removeProduct(index, productNotificationsList);
+        },
+        child: buildSingleProductCheckbox(context, productNotificationsList[index],
+            index, productNotificationsList),
+    );
+    // code for rowItem to delete only via click
+    /*
+    return buildSingleProductCheckbox(context, productNotificationsList[index],
+        index, productNotificationsList);
+     */
+  }
+
+  Widget deleteBgItem(color) {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: EdgeInsets.only(right: 20),
+      color: color,
+      child: Icon(Icons.delete, color: Colors.white),
+    );
+  }
+
+  showSnackBar(context, product, index, productNotificationsList) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: Duration(seconds: 4),
+      content: Text("${product.title} deleted"),
+      action: SnackBarAction(
+        label: "Rückgängig",
+        onPressed: () {
+          undoDelete(index, product, productNotificationsList);
+        },
+      ),
+    ));
+  }
+
+  undoDelete(index, product, productNotificationsList) {
+    setState(() {
+      productNotificationsList.insert(index, product);
+      productNotificationsList[index].value = false;
+    });
+  }
+
+  removeProduct(index, productNotificationsList) {
+    setState(() {
+      productNotificationsList.removeAt(index);
+    });
+  }
+
   Widget buildProductCheckbox({
+    required BuildContext context,
     required ProductCheckboxNotificationSetting notification,
     required VoidCallback onClicked,
+    required int index,
+    required productNotificationsList,
   }) =>
       buildCheckbox(onClicked, notification);
 
   Widget buildSingleProductCheckbox(
-          ProductCheckboxNotificationSetting checkboxNotification) =>
+          context,
+          ProductCheckboxNotificationSetting checkboxNotification,
+          index,
+          productNotificationsList) =>
       buildProductCheckbox(
-          notification: checkboxNotification,
-          onClicked: () {
-            setState(() {
-              checkboxNotification.value = !checkboxNotification.value;
-            });
-          },
+        productNotificationsList: productNotificationsList,
+        index: index,
+        context: context,
+        notification: checkboxNotification,
+        onClicked: () {
+          setState(() {
+            // removing an item...
+            checkboxNotification.value = !checkboxNotification.value;
+            var product = productNotificationsList[index];
+            showSnackBar(context, product, index, productNotificationsList);
+            removeProduct(index, productNotificationsList);
+          });
+        },
       );
 
   Padding buildCheckbox(
       VoidCallback onClicked, ProductCheckboxNotificationSetting notification) {
     Color color = calcColor(notification.bbd); // get color according to bbd
-    String displayedText = "${notification.title} - ${formatter.format(notification.bbd)}";
+    String displayedText =
+        "${notification.title} - ${formatter.format(notification.bbd)}";
     return Padding(
       padding: const EdgeInsets.fromLTRB(30, 0, 50, 0),
       child: ListTile(
         onTap: onClicked,
         leading: Checkbox(
           shape: const CircleBorder(),
-          side: MaterialStateBorderSide.resolveWith((states) => BorderSide(width: 2, color: color)),
+          side: MaterialStateBorderSide.resolveWith(
+              (states) => BorderSide(width: 3, color: color)),
           activeColor: color,
           checkColor: Colors.transparent,
           value: notification.value,
