@@ -26,36 +26,119 @@ class Dashboard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100),
                     //more than 50% of width makes circle
                   ),
-                  child: Center(
+                  child: const Center(
                       child: Text("2",
                           style: TextStyle(color: Colors.white, fontSize: 44))),
                 ),
               ),
-              Text('laufen diese Woche ab',
+              const Text('laufen diese Woche ab',
                   style: TextStyle(
                       color: Palette.terraCotta, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: 75,
+                height: 180,
+                child: ListView(
+                  padding: const EdgeInsets.all(8),
+
+                  children: <Widget>[
+                    Container(
+                      height: 50,
+                      color: Palette.honeydewHalf,
+                      child: Center(child: Text("Champions")),
+                    ),
+                    Container(
+                      height: 50,
+                      color: Palette.honeydewHalf,
+                      child: Center(child: Text("Champions")),
+                    ),
+                    Container(
+                      height: 50,
+                      color: Palette.honeydewHalf,
+                        child: Center(child: Text("Champions")),
+                    ),
+                  ],
+                ),
               ),
-              Text(
+
+
+
+
+              Padding(
+                padding: const EdgeInsets.only(right: 42,bottom: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    SizedBox(
+                      height: 52,
+                      width: 55,
+                      child: RawMaterialButton(
+                        onPressed: () {},
+                        elevation: 2.0,
+                        fillColor: Palette.bottleGreen,
+                        padding: EdgeInsets.all(5.0),
+                        shape: CircleBorder(),
+                      ),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {},
+                      elevation: 2.0,
+                      fillColor: Palette.bottleGreen,
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 35.0,
+                      ),
+                      padding: EdgeInsets.all(9.0),
+                      shape: CircleBorder(),
+                    ),
+                  ],
+
+                ),
+              ),
+
+              const Text(
                 "Versuch's mal hiermit:",
                 style: TextStyle(
                     fontSize: 22,
                     color: Palette.castletonGreen,
                     fontWeight: FontWeight.bold),
               ),
-              Text(
+              const Text(
                 "Pasta mit Tomaten-Sahne Sauce",
                 style: TextStyle(
                   fontSize: 18,
                   color: Palette.castletonGreen,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 250),
-                child: SizedBox(
-                  width: 300,
-                  height: 40,
+              SizedBox(
+                height: 180,
+                child: ListView(
+                  padding: const EdgeInsets.all(8),
+
+                  children: <Widget>[
+                    Container(
+                      height: 50,
+                      color: Palette.honeydewHalf,
+                      child: Center(child: Text("Champions")),
+                    ),
+                    Container(
+                      height: 50,
+                      color: Palette.honeydewHalf,
+                        child: Center(child: Text("Champions"))
+                    ),
+                    Container(
+                      height: 50,
+                      color: Palette.honeydewHalf,
+                      child: Center(child: Text("Champions")),
+                    ),
+                  ],
+                ),
+              ),
+
+
+              SizedBox( height: 40,
+                width: 300,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Palette.castletonGreen,
