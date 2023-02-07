@@ -1,14 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:little_savior_v1/screens/menue.dart';
 import 'package:little_savior_v1/config/palette.dart';
 
+import '../models/addButton.dart';
+import '../models/product_checkbox_notification_setting.dart';
 import 'myrecipes.dart';
 
-class Dashboard extends StatelessWidget {
+
+class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
 
   @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  @override
+  List<ProductCheckboxNotificationSetting> productNotificationsRed = [
+    ProductCheckboxNotificationSetting(
+        title: "Produkt1", bbd: DateTime.now().add(new Duration(days: 3))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt2", bbd: DateTime.now().add(new Duration(days: 3))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt3", bbd: DateTime.now().add(new Duration(days: 3))),
+    ProductCheckboxNotificationSetting(
+        title: "Produkt4", bbd: DateTime.now().add(new Duration(days: 3)))
+  ];
+  final DateFormat formatter = DateFormat('dd.MM');
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -35,35 +55,10 @@ class Dashboard extends StatelessWidget {
                   style: TextStyle(
                       color: Palette.terraCotta, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: 180,
-                child: ListView(
-                  padding: const EdgeInsets.all(8),
-
-                  children: <Widget>[
-                    Container(
-                      height: 50,
-                      color: Palette.honeydewHalf,
-                      child: Center(child: Text("Champions")),
-                    ),
-                    Container(
-                      height: 50,
-                      color: Palette.honeydewHalf,
-                      child: Center(child: Text("Champions")),
-                    ),
-                    Container(
-                      height: 50,
-                      color: Palette.honeydewHalf,
-                        child: Center(child: Text("Champions")),
-                    ),
-                  ],
-                ),
+               child: showList(productNotificationsRed),
               ),
-
-
-
-
               Padding(
-                padding: const EdgeInsets.only(right: 42,bottom: 10),
+                padding: const EdgeInsets.only(right: 14, bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -78,23 +73,10 @@ class Dashboard extends StatelessWidget {
                         shape: CircleBorder(),
                       ),
                     ),
-                    RawMaterialButton(
-                      onPressed: () {},
-                      elevation: 2.0,
-                      fillColor: Palette.bottleGreen,
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 35.0,
-                      ),
-                      padding: EdgeInsets.all(9.0),
-                      shape: CircleBorder(),
-                    ),
+                    addbutton(subpage: MyRecipes(),),
                   ],
-
                 ),
               ),
-
               const Text(
                 "Versuch's mal hiermit:",
                 style: TextStyle(
@@ -113,18 +95,29 @@ class Dashboard extends StatelessWidget {
                 height: 180,
                 child: ListView(
                   padding: const EdgeInsets.all(8),
-
                   children: <Widget>[
-                    Container(
-                      height: 50,
-                      color: Palette.honeydewHalf,
-                      child: Center(child: Text("Champions")),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+
+                        Container(
+
+                          width: 50,
+                          height: 50,
+                          color: Palette.terraCotta ,
+
+                        ),
+                        Container(
+                          height: 50,
+                          color: Palette.honeydewHalf,
+                          child: Center(child: Text("Champions")),
+                        ),
+                      ],
                     ),
                     Container(
-                      height: 50,
-                      color: Palette.honeydewHalf,
-                        child: Center(child: Text("Champions"))
-                    ),
+                        height: 50,
+                        color: Palette.honeydewHalf,
+                        child: Center(child: Text("Champions"))),
                     Container(
                       height: 50,
                       color: Palette.honeydewHalf,
@@ -133,9 +126,8 @@ class Dashboard extends StatelessWidget {
                   ],
                 ),
               ),
-
-
-              SizedBox( height: 40,
+              SizedBox(
+                height: 40,
                 width: 300,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 8),
@@ -165,4 +157,158 @@ class Dashboard extends StatelessWidget {
       ),
     );
   }
+  showList(productNotificationsList) {
+    return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(10),
+        itemCount: productNotificationsList.length,
+        itemBuilder: (BuildContext context, int index) {
+          return rowItem(context, index, productNotificationsList);
+        });
+  }
+
+  rowItem(BuildContext context, int index, productNotificationsList) {
+    // code for rowItem to delete via slide...
+    return Dismissible(
+      key: Key(productNotificationsList[index].title),
+      movementDuration: const Duration(seconds: 1),
+      background: deleteBgItem(calcColor(productNotificationsList[index].bbd)),
+      onDismissed: (direction) {
+        var product = productNotificationsList[index];
+        showSnackBar(context, product, index, productNotificationsList);
+        removeProduct(index, productNotificationsList);
+      },
+      child: buildSingleProductCheckbox(context, productNotificationsList[index],
+          index, productNotificationsList),
+    );
+    // code for rowItem to delete only via click
+    /*
+    return buildSingleProductCheckbox(context, productNotificationsList[index],
+        index, productNotificationsList);
+     */
+  }
+
+  Widget deleteBgItem(color) {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: const EdgeInsets.only(right: 20),
+      color: color,
+      child: const Icon(Icons.delete, color: Colors.white),
+    );
+  }
+
+  showSnackBar(context, product, index, productNotificationsList) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 4),
+      content: Text("${product.title} gelöscht..."),
+      action: SnackBarAction(
+        label: "Rückgängig",
+        onPressed: () {
+          undoDelete(index, product, productNotificationsList);
+        },
+      ),
+    ));
+  }
+
+  undoDelete(index, product, productNotificationsList) {
+    setState(() {
+      productNotificationsList.insert(index, product);
+      productNotificationsList[index].value = false;
+    });
+  }
+
+  removeProduct(index, productNotificationsList) {
+    setState(() {
+      productNotificationsList.removeAt(index);
+    });
+  }
+
+  Widget buildProductCheckbox({
+    required BuildContext context,
+    required ProductCheckboxNotificationSetting notification,
+    required VoidCallback onClicked,
+    required int index,
+    required productNotificationsList,
+  }) =>
+      buildCheckbox(onClicked, notification);
+
+  Widget buildSingleProductCheckbox(
+      context,
+      ProductCheckboxNotificationSetting checkboxNotification,
+      index,
+      productNotificationsList) =>
+      buildProductCheckbox(
+        productNotificationsList: productNotificationsList,
+        index: index,
+        context: context,
+        notification: checkboxNotification,
+        onClicked: () {
+          setState(() {
+            // removing an item...
+            /*checkboxNotification.value = !checkboxNotification.value;
+            var product = productNotificationsList[index];
+            showSnackBar(context, product, index, productNotificationsList);
+            removeProduct(index, productNotificationsList);
+
+             */
+          });
+        },
+      );
+
+  Padding buildCheckbox(
+      VoidCallback onClicked, ProductCheckboxNotificationSetting notification) {
+    Color color = calcColor(notification.bbd); // get color according to bbd
+    String displayedText =
+        "${notification.title} - ${formatter.format(notification.bbd)}";
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 0, 50, 0),
+      child: ListTile(
+        onTap: onClicked,
+        leading: Checkbox(
+          shape: const CircleBorder(),
+          side: MaterialStateBorderSide.resolveWith(
+                  (states) => BorderSide(width: 3, color: color)),
+          activeColor: color,
+          checkColor: Colors.transparent,
+          value: notification.value,
+          onChanged: (value) => onClicked(),
+        ),
+        title: Container(
+          decoration: const BoxDecoration(
+            color: Palette.honeydewHalf,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: Text(
+                displayedText,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color calcColor(DateTime bbd) {
+    // helper method to calculate color according to bbd
+    DateTime now = DateTime.now();
+    if (bbd.difference(now).inDays < 7) {
+      // läuft diese Woche ab
+      return Palette.terraCottaHalf;
+    }
+    if (bbd.difference(now).inDays < 14) {
+      // läuft nächste Woche ab
+      return Palette.macaroniAndCheeseHalf;
+    }
+    // noch mindestens 2 Wochen haltbar
+    return Palette.honeydew;
+  }
 }
+
