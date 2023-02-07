@@ -108,8 +108,10 @@ class _DashboardState extends State<Dashboard> {
 
                         ),
                         Container(
+                          width: 300,
                           height: 50,
                           color: Palette.honeydewHalf,
+                          
                           child: Center(child: Text("Champions")),
                         ),
                       ],
