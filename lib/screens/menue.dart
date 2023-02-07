@@ -7,6 +7,7 @@ import 'package:little_savior_v1/screens/mygroceries.dart';
 import 'package:little_savior_v1/screens/mypantry.dart';
 import 'package:little_savior_v1/screens/myrecipes.dart';
 import 'package:little_savior_v1/screens/mytips.dart';
+import 'package:little_savior_v1/screens/saviorScore.dart';
 
 class Menue extends StatelessWidget  {
   const Menue({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class Menue extends StatelessWidget  {
           buildListTile(context, MyRecipes(), title: 'Meine Rezepte', ),
           buildListTile(context, Menue(), title: 'Rezeptvorschläge', ),
           buildListTile(context, MyTips(), title: 'Ist das noch gut?',),
-          buildListTile(context, Menue(), title: 'Savior Score'),
+          buildListTile(context, SaviorScore(), title: 'Savior Score'),
           buildListTile(context, AddIngredient(), title: "Lebensmittel adden (Nur zum testen hier drin)"),
           buildListTile(context, MyStockIngredients(), title: "random stock zum testen"),
         ],
