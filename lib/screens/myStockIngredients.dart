@@ -60,12 +60,12 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
         // get title from database
         drawer: const Menue().getDrawer(context),
         body: _isLoading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 child: Column(
                   children: [
-                    const ProductList(
-                        "Läuft diese Woche ab", Palette.terraCottaHalf), showList(productNotificationsRed),
+                    const ProductList("Läuft diese Woche ab", Palette.terraCottaHalf),
+                    showList(productNotificationsRed),
                     const ProductList("Läuft nächste Woche ab", Palette.macaroniAndCheeseHalf),
                     showList(productNotificationsYellow),
                     const ProductList("Länger als 2 Wochen haltbar", Palette.honeydew),
@@ -79,7 +79,7 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
     return ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         itemCount: productNotificationsList.length,
         itemBuilder: (BuildContext context, int index) {
           return rowItem(context, index, productNotificationsList);
@@ -90,7 +90,7 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
     // code for rowItem to delete via slide...
     return Dismissible(
         key: Key(productNotificationsList[index].title),
-        movementDuration: Duration(seconds: 1),
+        movementDuration: const Duration(seconds: 1),
         background: deleteBgItem(calcColor(productNotificationsList[index].bbd)),
         onDismissed: (direction) {
           var product = productNotificationsList[index];
@@ -110,16 +110,16 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
   Widget deleteBgItem(color) {
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(right: 20),
+      padding: const EdgeInsets.only(right: 20),
       color: color,
-      child: Icon(Icons.delete, color: Colors.white),
+      child: const Icon(Icons.delete, color: Colors.white),
     );
   }
 
   showSnackBar(context, product, index, productNotificationsList) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: Duration(seconds: 4),
-      content: Text("${product.title} deleted"),
+      duration: const Duration(seconds: 4),
+      content: Text("${product.title} gelöscht..."),
       action: SnackBarAction(
         label: "Rückgängig",
         onPressed: () {
