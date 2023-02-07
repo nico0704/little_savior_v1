@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:little_savior_v1/config/palette.dart';
-import 'package:little_savior_v1/screens/menue.dart';
 import 'package:intl/intl.dart';
+import 'package:little_savior_v1/config/palette.dart';
 import '../models/product_checkbox_notification_setting.dart';
+import 'menue.dart';
 
-class MyGroceries extends StatefulWidget {
-  const MyGroceries({Key? key}) : super(key: key);
+class MyStockIngredients extends StatefulWidget {
+  const MyStockIngredients({Key? key}) : super(key: key);
 
   @override
-  State<MyGroceries> createState() => _MyGroceriesState();
+  State<MyStockIngredients> createState() => _MyStockIngredientsState();
 }
 
-class _MyGroceriesState extends State<MyGroceries> {
+class _MyStockIngredientsState extends State<MyStockIngredients> {
   final bool _isLoading = false;
   final DateFormat formatter = DateFormat('dd.MM');
 
@@ -47,7 +47,6 @@ class _MyGroceriesState extends State<MyGroceries> {
     ProductCheckboxNotificationSetting(
         title: "Produkt12", bbd: DateTime.now().add(new Duration(days: 20)))
   ];
-
   // end of test data
   @override
   void initState() {
@@ -65,8 +64,8 @@ class _MyGroceriesState extends State<MyGroceries> {
             : SingleChildScrollView(
                 child: Column(
                   children: [
-                    const ProductList("Läuft diese Woche ab", Palette.terraCottaHalf),
-                    showList(productNotificationsRed),
+                    const ProductList(
+                        "Läuft diese Woche ab", Palette.terraCottaHalf), showList(productNotificationsRed),
                     const ProductList("Läuft nächste Woche ab", Palette.macaroniAndCheeseHalf),
                     showList(productNotificationsYellow),
                     const ProductList("Länger als 2 Wochen haltbar", Palette.honeydew),
@@ -90,16 +89,16 @@ class _MyGroceriesState extends State<MyGroceries> {
   rowItem(BuildContext context, int index, productNotificationsList) {
     // code for rowItem to delete via slide...
     return Dismissible(
-      key: Key(productNotificationsList[index].title),
-      movementDuration: Duration(seconds: 1),
-      background: deleteBgItem(calcColor(productNotificationsList[index].bbd)),
-      onDismissed: (direction) {
-        var product = productNotificationsList[index];
-        showSnackBar(context, product, index, productNotificationsList);
-        removeProduct(index, productNotificationsList);
-      },
-      child: buildSingleProductCheckbox(context,
-          productNotificationsList[index], index, productNotificationsList),
+        key: Key(productNotificationsList[index].title),
+        movementDuration: Duration(seconds: 1),
+        background: deleteBgItem(calcColor(productNotificationsList[index].bbd)),
+        onDismissed: (direction) {
+          var product = productNotificationsList[index];
+          showSnackBar(context, product, index, productNotificationsList);
+          removeProduct(index, productNotificationsList);
+        },
+        child: buildSingleProductCheckbox(context, productNotificationsList[index],
+            index, productNotificationsList),
     );
     // code for rowItem to delete only via click
     /*
@@ -272,88 +271,3 @@ class Product {
   String name;
   String bbd;
 }
-
-/*class MyGroceries extends StatelessWidget {
-  const MyGroceries({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Menue().getAppBar(title: "Meine Lebensmittel"),
-      drawer: Menue().getDrawer(context),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: ListView(children: [
-          ListTile(
-            tileColor: Palette.terraCottaHalf,
-            title: Text(
-              "Läuft diese Woche ab",
-              style: TextStyle(color: Palette.castletonGreen, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(60, 10, 20, 0),
-            child: ListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-              ),
-              tileColor: Palette.honeydewHalf,
-              title: Text(
-                "Zucchini - morgen",
-                style: TextStyle(color: Palette.castletonGreen),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-        ]),
-      ),
-    );
-  }
-
-  Padding buildCategory(int entries, {required String title}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListTile(
-        tileColor: Color.fromRGBO(11, 110, 79, 1.0),
-        title: Row(children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Text(
-                title,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-          ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: Column(
-                children: [
-                  Text(
-                    "${entries} Einträge",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Icon(
-                    Icons.draw_rounded,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ]),
-      ),
-    );
-  }
-}
-
- */
