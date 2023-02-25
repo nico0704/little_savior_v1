@@ -62,8 +62,8 @@ class _MyGroceriesState extends State<MyGroceries> {
 
   showList(productNotificationsList) {
     return ListView.builder(
-        scrollDirection: Axis.vertical,
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(10),
         itemCount: productNotificationsList.length,
         itemBuilder: (BuildContext context, int index) {
