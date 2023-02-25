@@ -8,6 +8,8 @@ import 'package:little_savior_v1/config/palette.dart';
 import 'package:little_savior_v1/models/checkbox_notification_setting.dart';
 import '../models/stock.dart';
 import '../models/stock.api.dart';
+import '../models/unit.dart';
+import '../models/unit.api.dart';
 import 'menue.dart';
 
 class AddIngredient extends StatefulWidget {
@@ -17,15 +19,9 @@ class AddIngredient extends StatefulWidget {
 
 class _MyAddRecipeState extends State<AddIngredient> {
   List<Stock> stocks = [];
+  List<Unit> units = [];
   List<CheckboxNotificationSetting> stockNotifications = [];
-
-  // dummy data... später von DB holen
-  List<CheckboxNotificationSetting> unitNotifications = [
-    CheckboxNotificationSetting(title: "Gramm"),
-    CheckboxNotificationSetting(title: "Kilo"),
-    CheckboxNotificationSetting(title: "Stück"),
-    CheckboxNotificationSetting(title: "Packungen"),
-  ];
+  List<CheckboxNotificationSetting> unitNotifications = [];
 
   List<Widget> inputElements = [];
   String? currentState;
@@ -47,6 +43,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
     inputElements.add(buildNameInputRow());
     super.initState();
     getStocks();
+    getUnits();
     currentState = "build_not_finished";
     nameController.addListener(_valueChangeOfName);
     mhdController.addListener(_valueChangeOfMHD);
@@ -62,6 +59,14 @@ class _MyAddRecipeState extends State<AddIngredient> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  Future<void> getUnits() async {
+    units = await UnitApi.getUnits();
+    for (var element in units) {
+      unitNotifications.add(CheckboxNotificationSetting(title: element.name));
+    }
+    setState(() {});
   }
 
   // Controller for input
