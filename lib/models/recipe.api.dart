@@ -6,7 +6,7 @@ import 'package:http/testing.dart';
 
 class RecipeApi {
   static Future<List<Recipe>> getRecipe() async {
-    var uri = Uri.http("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/recipes", {'format': 'json'});
+    var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/recipes", {'format': 'json'});
     final response = await http.get(uri);
     List<dynamic> dataList = jsonDecode(response.body);
     //print(response.body);

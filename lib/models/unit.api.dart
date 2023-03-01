@@ -6,7 +6,7 @@ import 'package:http/testing.dart';
 
 class UnitApi {
   static Future<List<Unit>> getUnits() async {
-    var uri = Uri.http("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/units", {'format': 'json'});
+    var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/units", {'format': 'json'});
     final response = await http.get(uri);
     List<dynamic> dataList = jsonDecode(response.body);
     //print(response.body);

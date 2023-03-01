@@ -6,7 +6,7 @@ import 'package:http/testing.dart';
 
 class StockApi {
   static Future<List<Stock>> getStocks() async {
-    var uri = Uri.http("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/stocks", {'format': 'json'});
+    var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/stocks", {'format': 'json'});
     final response = await http.get(uri);
     List<dynamic> dataList = jsonDecode(response.body);
     print(response.body);
