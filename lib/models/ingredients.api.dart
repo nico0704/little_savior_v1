@@ -6,11 +6,17 @@ import 'package:http/testing.dart';
 
 class IngredientsApi {
   static Future<List<Ingredients>> getIngredients() async {
-    var uri = Uri.http("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/ingredients", {'format': 'json'});
+    var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/ingredients", {'format': 'json'});
     final response = await http.get(uri);
     List<dynamic> dataList = jsonDecode(response.body);
     //print(response.body);
     return Ingredients.ingredientsFromSnapshot(dataList);
+  }
+
+  static deleteIngredient(int id) async {
+    print("deleting product with id $id");
+    var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/ingredients/$id");
+    final response = await http.delete(uri);
   }
 }
 

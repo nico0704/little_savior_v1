@@ -35,6 +35,10 @@ class _MyGroceriesState extends State<MyGroceries> {
     });
   }
 
+  Future<void> deleteIngredient(int id) async {
+    await IngredientsApi.deleteIngredient(id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +115,12 @@ class _MyGroceriesState extends State<MyGroceries> {
           undoDelete(index, product, productNotificationsList);
         },
       ),
-    ));
+    )).closed.then((SnackBarClosedReason reason) {
+      if (reason == SnackBarClosedReason.timeout) {
+        // make api call to ultimately delete product from db
+        deleteIngredient(product.id);
+      }
+    });
   }
 
   undoDelete(index, product, productNotificationsList) {
@@ -219,17 +228,19 @@ class _MyGroceriesState extends State<MyGroceries> {
         productNotificationsRed.add(ProductCheckboxNotificationSetting(
             title: element.name,
             expiry: element.expiry,
-            bbd: now.add(Duration(days: element.expiry))));
+            bbd: now.add(Duration(days: element.expiry)),
+            id: element.id,
+        ));
       } else if (element.expiry < 14) {
         productNotificationsYellow.add(ProductCheckboxNotificationSetting(
             title: element.name,
             expiry: element.expiry,
-            bbd: now.add(Duration(days: element.expiry))));
+            bbd: now.add(Duration(days: element.expiry)), id: element.id));
       } else {
         productNotificationsGreen.add(ProductCheckboxNotificationSetting(
             title: element.name,
             expiry: element.expiry,
-            bbd: now.add(Duration(days: element.expiry))));
+            bbd: now.add(Duration(days: element.expiry)), id: element.id));
       }
     }
   }
