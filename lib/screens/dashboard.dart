@@ -20,13 +20,13 @@ class _DashboardState extends State<Dashboard> {
   @override
   List<ProductCheckboxNotificationSetting> productNotificationsRed = [
     ProductCheckboxNotificationSetting(
-        title: "Produkt1", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3))),
+        title: "Produkt1", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt2", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3))),
+        title: "Produkt2", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt3", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3))),
+        title: "Produkt3", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt4", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)))
+        title: "Produkt4", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99)
   ];
   final DateFormat formatter = DateFormat('dd.MM');
   Widget build(BuildContext context) {
