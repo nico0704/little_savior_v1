@@ -158,6 +158,7 @@ class _MyGroceriesState extends State<MyGroceries> {
         onClicked: () {
           setState(() {
             // removing an item...
+            // comment this code out to remove delete functionality via click
             checkboxNotification.value = !checkboxNotification.value;
             var product = productNotificationsList[index];
             showSnackBar(context, product, index, productNotificationsList);
