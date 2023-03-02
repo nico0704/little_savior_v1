@@ -6,7 +6,8 @@ import 'package:http/testing.dart';
 
 class IngredientsApi {
   static Future<List<Ingredients>> getIngredients() async {
-    var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/ingredients", {'format': 'json'});
+    var uri = Uri.https("medsrv.informatik.hs-fulda.de",
+        "/lsbackend/api/v1/ingredients", {'format': 'json'});
     final response = await http.get(uri);
     List<dynamic> dataList = jsonDecode(response.body);
     //print(response.body);
@@ -15,9 +16,29 @@ class IngredientsApi {
 
   static deleteIngredient(int id) async {
     print("deleting product with id $id");
-    var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/ingredients/$id");
+    var uri = Uri.https(
+        "medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/ingredients/$id");
     final response = await http.delete(uri);
   }
-}
 
-//http://medsrv.informatik.hs-fulda.de/lsbackend/api/v1/ingredients.json
+  static Future addIngredient({
+    required data,
+  }) async {
+    var url = Uri.https(
+        "medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/ingredients/");
+    var json = jsonEncode(data.toJson());
+    http.Response response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json,
+    );
+    if (response.statusCode == 201) {
+      print(response.body);
+      return true;
+    }
+    print(response.body);
+    return false;
+  }
+}
