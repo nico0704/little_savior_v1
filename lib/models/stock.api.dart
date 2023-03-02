@@ -9,7 +9,7 @@ class StockApi {
     var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/stocks", {'format': 'json'});
     final response = await http.get(uri);
     List<dynamic> dataList = jsonDecode(response.body);
-    print(response.body);
+    //print(response.body);
     return Stock.stockFromSnapshot(dataList);
   }
 }
