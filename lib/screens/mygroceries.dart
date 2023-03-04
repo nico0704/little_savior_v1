@@ -16,7 +16,7 @@ class MyGroceries extends StatefulWidget {
 class _MyGroceriesState extends State<MyGroceries> {
   bool _isLoading = true;
   final DateFormat formatter = DateFormat('dd.MM');
-  late List<Ingredients> _ingredients;
+  late List<Ingredient> _ingredients;
   late List<ProductCheckboxNotificationSetting> productNotificationsRed = [];
   late List<ProductCheckboxNotificationSetting> productNotificationsYellow = [];
   late List<ProductCheckboxNotificationSetting> productNotificationsGreen = [];
@@ -28,7 +28,7 @@ class _MyGroceriesState extends State<MyGroceries> {
   }
 
   Future<void> getIngredients() async {
-    _ingredients = await IngredientsApi.getIngredients();
+    _ingredients = await IngredientApi.getIngredients();
     setState(() {
       sortIngredients();
       _isLoading = false;
@@ -36,7 +36,7 @@ class _MyGroceriesState extends State<MyGroceries> {
   }
 
   Future<void> deleteIngredient(int id) async {
-    await IngredientsApi.deleteIngredient(id);
+    await IngredientApi.deleteIngredient(id);
   }
 
   @override
