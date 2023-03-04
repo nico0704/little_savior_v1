@@ -19,33 +19,33 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
   late List<Product> _products;
   List<ProductCheckboxNotificationSetting> productNotificationsRed = [
     ProductCheckboxNotificationSetting(
-        title: "Produkt1", bbd: DateTime.now().add(new Duration(days: 3))),
+        title: "Produkt1", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt2", bbd: DateTime.now().add(new Duration(days: 3))),
+        title: "Produkt2", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt3", bbd: DateTime.now().add(new Duration(days: 3))),
+        title: "Produkt3", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt4", bbd: DateTime.now().add(new Duration(days: 3)))
+        title: "Produkt4", expiry: 3, bbd: DateTime.now().add(new Duration(days: 3)), id: 99)
   ];
   List<ProductCheckboxNotificationSetting> productNotificationsYellow = [
     ProductCheckboxNotificationSetting(
-        title: "Produkt5", bbd: DateTime.now().add(new Duration(days: 10))),
+        title: "Produkt5", expiry: 10, bbd: DateTime.now().add(new Duration(days: 10)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt6", bbd: DateTime.now().add(new Duration(days: 10))),
+        title: "Produkt6", expiry: 10, bbd: DateTime.now().add(new Duration(days: 10)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt7", bbd: DateTime.now().add(new Duration(days: 10))),
+        title: "Produkt7", expiry: 10, bbd: DateTime.now().add(new Duration(days: 10)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt8", bbd: DateTime.now().add(new Duration(days: 10)))
+        title: "Produkt8", expiry: 10, bbd: DateTime.now().add(new Duration(days: 10)), id: 99)
   ];
   List<ProductCheckboxNotificationSetting> productNotificationsGreen = [
     ProductCheckboxNotificationSetting(
-        title: "Produkt9", bbd: DateTime.now().add(new Duration(days: 20))),
+        title: "Produkt9", expiry: 20, bbd: DateTime.now().add(new Duration(days: 20)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt10", bbd: DateTime.now().add(new Duration(days: 20))),
+        title: "Produkt10", expiry: 20, bbd: DateTime.now().add(new Duration(days: 20)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt11", bbd: DateTime.now().add(new Duration(days: 20))),
+        title: "Produkt11", expiry: 20, bbd: DateTime.now().add(new Duration(days: 20)), id: 99),
     ProductCheckboxNotificationSetting(
-        title: "Produkt12", bbd: DateTime.now().add(new Duration(days: 20)))
+        title: "Produkt12", expiry: 20, bbd: DateTime.now().add(new Duration(days: 20)), id: 99)
   ];
   // end of test data
   @override
@@ -77,8 +77,8 @@ class _MyStockIngredientsState extends State<MyStockIngredients> {
 
   showList(productNotificationsList) {
     return ListView.builder(
-        scrollDirection: Axis.vertical,
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.all(10),
         itemCount: productNotificationsList.length,
         itemBuilder: (BuildContext context, int index) {
