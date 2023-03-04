@@ -4,14 +4,13 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
 
-class IngredientsApi {
-  static Future<List<Ingredients>> getIngredients() async {
+class IngredientApi {
+  static Future<List<Ingredient>> getIngredients() async {
     var uri = Uri.https("medsrv.informatik.hs-fulda.de",
         "/lsbackend/api/v1/ingredients", {'format': 'json'});
     final response = await http.get(uri);
-    List<dynamic> dataList = jsonDecode(response.body);
-    //print(response.body);
-    return Ingredients.ingredientsFromSnapshot(dataList);
+    List<dynamic> dataList = jsonDecode(utf8.decode(response.bodyBytes));
+    return Ingredient.ingredientsFromSnapshot(dataList);
   }
 
   static deleteIngredient(int id) async {
@@ -35,10 +34,8 @@ class IngredientsApi {
       body: json,
     );
     if (response.statusCode == 201) {
-      print(response.body);
       return true;
     }
-    print(response.body);
     return false;
   }
 }

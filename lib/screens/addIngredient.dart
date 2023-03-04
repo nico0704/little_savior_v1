@@ -91,15 +91,15 @@ class _MyAddRecipeState extends State<AddIngredient> {
   }
 
   void saveIngredient() async {
-    Ingredients data = Ingredients(
+    Ingredient data = Ingredient(
         id: 0,
         name: name,
         expiry: calcExpiry(selectedDate),
-        barcode: 0,
-        category: 2,
-        instock: [],
-        inrecipe: []);
-    bool result = await IngredientsApi.addIngredient(data: data);
+        barcode: 123456789,
+        category: 2, // add option to screen as user input or determine in backend???
+        instock: [], // ???
+        inrecipe: []); // ???
+    bool result = await IngredientApi.addIngredient(data: data);
   }
 
   @override
@@ -272,7 +272,7 @@ class _MyAddRecipeState extends State<AddIngredient> {
           });
 
   Widget buildQuantityRow() => (Card(
-        margin: EdgeInsets.only(top: 1),
+        margin: const EdgeInsets.only(top: 1),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.black26),
@@ -283,12 +283,12 @@ class _MyAddRecipeState extends State<AddIngredient> {
           padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
           child: Row(
             children: [
-              FormCircle(),
+              const FormCircle(),
               Flexible(
                 child: TextField(
                   controller: quantityController,
                   textAlign: TextAlign.center,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Menge",
                     hintStyle: TextStyle(
                       color: Colors.black26,
@@ -459,62 +459,40 @@ class _MyAddRecipeState extends State<AddIngredient> {
         child: (Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const OptionButton("wegwerfen", Palette.terraCotta),
-            const OptionButton("abbrechen", Palette.macaroniAndCheese),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  saveIngredient();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Dashboard()));
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Palette.bottleGreen,
-                    shadowColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    )),
-                child: const Text("speichern",
-                    style: TextStyle(color: Colors.white)),
-              ),
-            ),
+            buildButton("wegwerfen", Palette.terraCotta, false),
+            buildButton("abbrechen", Palette.macaroniAndCheese, false),
+            buildButton("speichern", Palette.bottleGreen, true),
           ],
         )),
       );
 
+  Padding buildButton(String title, Color color, bool save) {
+    return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (save) {
+                  saveIngredient();
+                }
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const Dashboard()));
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: color,
+                  shadowColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  )),
+              child: Text(title,
+                  style: const TextStyle(color: Colors.white)),
+            ),
+          );
+  }
+
   calcExpiry(DateTime selectedDate) {
     return selectedDate.difference(DateTime.now()).inDays;
-  }
-}
-
-class OptionButton extends StatelessWidget {
-  final String title;
-  final Color color;
-
-  const OptionButton(
-    this.title,
-    this.color, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-            backgroundColor: color,
-            shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            )),
-        child: Text(title, style: const TextStyle(color: Colors.white)),
-      ),
-    );
   }
 }
 
@@ -535,19 +513,3 @@ class FormCircle extends StatelessWidget {
     );
   }
 }
-
-/*
-{
-  "name": "string",
-  "default_ddb": "2023-03-02T10:24:08.406Z",
-  "expiry": 0,
-  "barcode": 0,
-  "category": 0,
-  "instock": [
-    0
-  ],
-  "inrecipe": [
-    0
-  ]
-}
- */

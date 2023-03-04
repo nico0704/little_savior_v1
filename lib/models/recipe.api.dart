@@ -8,8 +8,7 @@ class RecipeApi {
   static Future<List<Recipe>> getRecipe() async {
     var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/recipes", {'format': 'json'});
     final response = await http.get(uri);
-    List<dynamic> dataList = jsonDecode(response.body);
-    //print(response.body);
+    List<dynamic> dataList = jsonDecode(utf8.decode(response.bodyBytes));
     return Recipe.recipesFromSnapshot(dataList);
   }
 }

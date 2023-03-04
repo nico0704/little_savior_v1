@@ -8,8 +8,7 @@ class UnitApi {
   static Future<List<Unit>> getUnits() async {
     var uri = Uri.https("medsrv.informatik.hs-fulda.de", "/lsbackend/api/v1/units", {'format': 'json'});
     final response = await http.get(uri);
-    List<dynamic> dataList = jsonDecode(response.body);
-    //print(response.body);
+    List<dynamic> dataList = jsonDecode(utf8.decode(response.bodyBytes));
     return Unit.unitFromSnapshot(dataList);
   }
 }

@@ -4,14 +4,14 @@
 
 import 'dart:convert';
 
-List<Ingredients> ingredientsFromJson(String str) => List<Ingredients>.from(
-    json.decode(str).map((x) => Ingredients.fromJson(x)));
+List<Ingredient> ingredientsFromJson(String str) => List<Ingredient>.from(
+    json.decode(str).map((x) => Ingredient.fromJson(x)));
 
-String ingredientsToJson(List<Ingredients> data) =>
+String ingredientsToJson(List<Ingredient> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Ingredients {
-  Ingredients({
+class Ingredient {
+  Ingredient({
     required this.id,
     required this.name,
     this.defaultDdb,
@@ -31,7 +31,7 @@ class Ingredients {
   List<dynamic> instock;
   List<dynamic> inrecipe;
 
-  factory Ingredients.fromJson(Map<String, dynamic> json) => Ingredients(
+  factory Ingredient.fromJson(Map<String, dynamic> json) => Ingredient(
         id: json["id"],
         name: json["name"],
         defaultDdb: json["default_ddb"],
@@ -42,9 +42,9 @@ class Ingredients {
         inrecipe: List<dynamic>.from(json["inrecipe"].map((x) => x)),
       );
 
-  static List<Ingredients> ingredientsFromSnapshot(List snapshot) {
+  static List<Ingredient> ingredientsFromSnapshot(List snapshot) {
     return snapshot.map((data) {
-      return Ingredients.fromJson(data);
+      return Ingredient.fromJson(data);
     }).toList();
   }
 
