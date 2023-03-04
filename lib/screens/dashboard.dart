@@ -54,9 +54,11 @@ class _DashboardState extends State<Dashboard> {
               const Text('laufen diese Woche ab',
                   style: TextStyle(
                       color: Palette.terraCotta, fontWeight: FontWeight.bold)),
+              //Produkte
               SizedBox(
                child: showList(productNotificationsRed),
               ),
+              //Button für Kamera und fürs Adden
               Padding(
                 padding: const EdgeInsets.only(right: 14, bottom: 10),
                 child: Row(
@@ -92,38 +94,121 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               SizedBox(
-                height: 180,
+                height: 300,
                 child: ListView(
                   padding: const EdgeInsets.all(8),
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
 
-                        Container(
+                          Container(
 
-                          width: 50,
-                          height: 50,
-                          color: Palette.terraCotta ,
+                            width: 30,
+                            height: 30,
 
-                        ),
-                        Container(
-                          width: 300,
-                          height: 50,
-                          color: Palette.honeydewHalf,
-                          
-                          child: Center(child: Text("Champions")),
-                        ),
-                      ],
+                            decoration: BoxDecoration(
+                              color: Palette.terraCotta,
+                              borderRadius: BorderRadius.circular(100),
+                              //more than 50% of width makes circle
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              height: 30,
+
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Palette.honeydewHalf,
+                                ),
+                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                color: Palette.honeydewHalf,
+                              ),
+                              child: Center(child: Text("Champions")),
+
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Container(
-                        height: 50,
-                        color: Palette.honeydewHalf,
-                        child: Center(child: Text("Champions"))),
-                    Container(
-                      height: 50,
-                      color: Palette.honeydewHalf,
-                      child: Center(child: Text("Champions")),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+
+                          Container(
+
+                            width: 30,
+                            height: 30,
+
+                            decoration: BoxDecoration(
+                              color: Palette.terraCotta,
+                              borderRadius: BorderRadius.circular(100),
+
+                              //more than 50% of width makes circle
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              height: 30,
+
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Palette.honeydewHalf,
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                color: Palette.honeydewHalf,
+                              ),
+                              child: Center(child: Text("Champions")),
+
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+
+                          Container(
+
+                            width: 30,
+                            height: 30,
+
+                            decoration: BoxDecoration(
+                              color: Palette.terraCotta,
+                              borderRadius: BorderRadius.circular(100),
+                              //more than 50% of width makes circle
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              height: 30,
+
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Palette.honeydewHalf,
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(20)),
+                                color: Palette.honeydewHalf,
+                              ),
+                              child: Center(child: Text("Champions")),
+
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
